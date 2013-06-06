@@ -18,6 +18,8 @@ class islandoraNewspaperImport {
 		$this->setupNameSpace($nameSpace);
 		$this->setupSourceData($importPath);
 
+		$this->validateIssueDate();
+
 		$this->issue=new islandoraNewspaperImportIssue($this);
 	}
 
@@ -91,6 +93,9 @@ class islandoraNewspaperImport {
 		}
 	}
 
+	function validateIssueDate(){
+		if (!checkdate(date('m',ISSUE_DATE), date('d',ISSUE_DATE), date('Y',ISSUE_DATE))) {
+			die("Date from metadata [{ISSUE_DATE}]is invalid\n");
 		}
 	}
 

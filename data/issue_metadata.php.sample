@@ -1,0 +1,4 @@
+<?php
+
+define('ISSUE_DATE', mktime(0, 0, 0, 7, 1, 2000));
+
