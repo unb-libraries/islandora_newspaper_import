@@ -4,7 +4,6 @@ class islandoraNewspaperImportIssue {
 
 	function __construct($importObject) {
 		$this->importObject=$importObject;
-		$this->setupSourceData();
 		$this->pages=array();
 		$this->issuedate=new date();
 	}

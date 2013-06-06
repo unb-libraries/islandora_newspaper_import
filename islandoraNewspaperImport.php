@@ -68,7 +68,7 @@ class islandoraNewspaperImport {
 		} else {
 			$this->import_path=$importPath;
 		}
-		$this->validateSourceData();
+		$this->validateSourcePath();
 	}
 
 	function validateNameSpace() {
@@ -91,10 +91,10 @@ class islandoraNewspaperImport {
 		}
 	}
 
-	function validateSourceData() {
-		$filename = join('/', array($this->import_path,'issue.csv'));
-		if (!is_readable($filename)) {
-			die("$filename does not exist, or is not readable!\n");
 		}
+	}
+
+	function validateSourcePath() {
+		if(!@include(join('/', array($this->import_path,'issue_metadata.php')))) die("Failed to load 'issue_metadata.php' from {$this->import_path}");
 	}
 }
