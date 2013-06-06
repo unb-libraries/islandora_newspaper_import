@@ -1,0 +1,7 @@
+<?php
+
+define('FEDORA_URL', '');
+define('FEDORA_USER', '');
+define('FEDORA_PASSWORD', '');
+define('MARC_ORG_CODE', '');
+
