@@ -50,6 +50,7 @@ class islandoraNewspaperImport {
 		// $this->api->m->ingest(array('pid' => $this->testPid));
 		// $this->api->m->addDatastream($this->testPid, $this->testDsid, 'string', '<test> test </test>', NULL);
 		print "Ingesting ".print_r($page,TRUE);
+		// TODO: TRIGGER HOOKS THAT GENERATE SURROGATES
 	}
 
 	function ingestIssue() {
