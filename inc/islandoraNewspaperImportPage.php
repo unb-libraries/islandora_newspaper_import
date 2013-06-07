@@ -8,13 +8,9 @@ class islandoraNewspaperImportPage {
 		$this->sequenceNumber=1;
 		$this->image['filepath']=$imageFilePath;
 		$this->parentPID=$parentPID;
-		$this->pid=join('-',array(
-								$this->parentPID,
-								sprintf("%03d", $this->pageNumber)
-								)
-						);
 		$this->cModel=$pageContentModelString;
 		$this->marcOrgID=$marcOrgID;
+		$this->assignPID();
 	}
 
 	function assignMODS($templatePath){
@@ -25,6 +21,14 @@ class islandoraNewspaperImportPage {
 		$pageMODS->assign('source_media', $this->sourceMedia);
 		$pageMODS->assign('marcorg_id', $this->marcOrgID);
 		$this->xml['MODS']=$pageMODS->fetch( join('/',array($templatePath,'page_mods.tpl.php')) );
+	}
+
+	function assignPID(){
+		$this->pid=join('-',array(
+						$this->parentPID,
+						sprintf("%03d", $this->pageNumber)
+						)
+				);
 	}
 
 	function assignRDF($templatePath){
