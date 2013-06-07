@@ -32,18 +32,11 @@ class islandoraNewspaperImportIssue {
 		$this->xml['MODS']=$issueMODS->fetch( join('/',array($templatePath,'issue_mods.tpl.php')) );
 	}
 
-	function assignRDF($contentModelPID, $parentCollectionPID, $templatePath){
+	function assignRDF($contentModelPID, $parentCollectionPID, $issuePID, $templatePath){
 		$issueRDF= new Smarty;
-		$issueRDF->assign('issue_pid', join(
-											":",
-											array(
-												$this->namespace,
-												$this->getISODate(),
-											)
-										)
-							);
-		$issueRDF->assign('content_model_pid', $contentModelPID);
-		$issueRDF->assign('collection_pid', $parentCollectionPID);
+		$issueRDF->assign('issue_pid', $issuePID);
+		$issueRDF->assign('issue_content_model_pid', $contentModelPID);
+		$issueRDF->assign('parent_collection_pid', $parentCollectionPID);
 		$this->xml['RDF']=$issueRDF->fetch( join('/',array($templatePath,'issue_rdf.tpl.php')) );
 	}
 
@@ -55,13 +48,21 @@ class islandoraNewspaperImportIssue {
 				);
 		preg_match( '/^('.implode('|',$non_sort_words).')? *(.*)$/i' , ISSUE_TITLE, $titleArray);
 
+		$this->pid=join(
+							":",
+							array(
+								$this->namespace,
+								$this->getISODate(),
+							)
+						);
+
 		// Assign Issue Metadata
 		$this->assignMODS($titleArray, $lccnID, $issueVolume, $issueIssue, $issueEdition, $missingPages, $templatePath);
-		$this->assignRDF($issueContentModelPID, $parentCollectionPID, $templatePath);
+		$this->assignRDF($issueContentModelPID, $parentCollectionPID, $issuePID, $templatePath);
 
 		// Build Pages
 		foreach ($imagesToImport as $curImageToImport) {
-			$this->pages[]=new islandoraNewspaperImportPage($curImageToImport['pageno'],$curImageToImport['filepath']);
+			$this->pages[]=new islandoraNewspaperImportPage($issuePID, $pageContentModelPID, $curImageToImport['pageno'],$curImageToImport['filepath']);
 		}
 	}
 
