@@ -1,7 +1,7 @@
 <?php
 
-require_once 'islandoraNewspaperImport.php';
 require_once 'importConfig.php';
+require_once 'inc/islandoraNewspaperImport.php';
 
 $import = new islandoraNewspaperImport(
 										FEDORA_URL,
