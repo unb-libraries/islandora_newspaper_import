@@ -7,3 +7,6 @@ define('ISSUE_LCCN', '');
 define('ISSUE_VOLUME', '');
 define('ISSUE_ISSUE', '');
 define('ISSUE_EDITION', '');
+define('MISSING_PAGES', '');
+define('ISSUE_CONTENT_MODEL_PID', '');
+define('PAGE_CONTENT_MODEL_PID', '');

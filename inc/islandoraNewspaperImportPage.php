@@ -2,10 +2,11 @@
 
 class islandoraNewspaperImportPage {
 
-	function __construct($pageNumber, $imagePath) {
+	function __construct($pageNumber, $imageFilePath) {
 		$this->pageNumber=$pageNumber;
-		$this->image=new stdClass();
-		$this->image->path=$imagePath;
+		$this->image['filepath']=$imageFilePath;
+		// Check image filepath exists
+		// Compute metrics
 	}
 
 }
