@@ -16,8 +16,7 @@ class islandoraNewspaperImport {
 		$this->setupParentCollection($parentCollectionPID);
 		$this->setupNameSpace($nameSpace);
 		$this->setupSourceData($importPath);
-
-		$this->validateIssueDate();
+		$this->validateIssueMetaData();
 
 		$this->issue=new islandoraNewspaperImportIssue($this);
 		$this->issuePageCounter=0;
@@ -83,6 +82,19 @@ class islandoraNewspaperImport {
 			$this->import_path=$importPath;
 		}
 		$this->validateSourcePath();
+	}
+
+	function validateIssueMetaData() {
+		$this->validateIssueDate();
+		$must_exist_data=array(
+				'ISSUE_TITLE',
+				'ISSUE_MEDIA',
+				'ISSUE_LCCN',
+				'ISSUE_VOLUME',
+				'ISSUE_ISSUE',
+				'ISSUE_EDITION',
+				);
+		foreach ($must_exist_data as $cur_data) if (!constant($cur_data) || constant($cur_data) == '') die ("$cur_data is not set in issue_metadata.inc.php\n");
 	}
 
 	function validateNameSpace() {
