@@ -1,5 +1,6 @@
 <?php
 
+define('SCRIPT_ROOT', '');
 define('FEDORA_URL', '');
 define('FEDORA_USER', '');
 define('FEDORA_PASSWORD', '');

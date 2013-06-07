@@ -1,8 +1,5 @@
 <?php
 
-require_once 'islandoraNewspaperImportIssue.php';
-require_once 'islandoraNewspaperImportPage.php';
-
 class islandoraNewspaperImport {
 
 	function __construct($repoURL,$repoUser,$repoPass,$parentCollectionPID=NULL,$nameSpace=NULL,$importPath=NULL) {

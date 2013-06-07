@@ -1,7 +1,10 @@
 <?php
 
-require_once 'inc/islandoraNewspaperImport.php';
 require_once 'importConfig.inc.php';
+require_once(join('/',array(SCRIPT_ROOT,'inc','islandoraNewspaperImport.php')));
+require_once(join('/',array(SCRIPT_ROOT,'inc','islandoraNewspaperImportIssue.php')));
+require_once(join('/',array(SCRIPT_ROOT,'inc','islandoraNewspaperImportPage.php')));
+require_once(join('/',array(SCRIPT_ROOT,'lib','smarty/distribution/libs/Smarty.class.php')));
 
 $import = new islandoraNewspaperImport(
 										FEDORA_URL,
