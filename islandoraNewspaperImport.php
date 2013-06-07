@@ -100,6 +100,7 @@ class islandoraNewspaperImport {
 	}
 
 	function validateSourcePath() {
-		if(!@include(join('/', array($this->import_path,'issue_metadata.php')))) die("Failed to load 'issue_metadata.php' from {$this->import_path}");
+		if(!@include(join('/', array($this->import_path,'issue_metadata.php')))) die("Failed to load 'issue_metadata.php' from {$this->import_path}\n");
+		if (sizeof(glob(join('/',array($this->import_path,'*.[tT][iI][fF]')))) < 1 ) die("No *.tif files exist in import path {$this->import_path}\n");
 	}
 }
