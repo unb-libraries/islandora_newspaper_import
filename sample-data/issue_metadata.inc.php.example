@@ -1,5 +1,6 @@
 <?php
 
+define('ISSUE_TITLE','');
 define('ISSUE_DATE', mktime(0, 0, 0, 7, 1, 2000));
 define('ISSUE_MEDIA', '');
 define('ISSUE_LCCN', '');
