@@ -29,25 +29,25 @@ class islandoraNewspaperImportIssue {
 		}
 	}
 
-	function assignMODS($titleArray, $lccnID, $issueVolume, $issueIssue, $issueEdition, $missingPages, $templatePath){
+	function assignMODS($titleArray, $templatePath){
 		$issueMODS= new Smarty;
-		$issueMODS->assign('lccn_id', $lccnID);
-		$issueMODS->assign('issue_volume', $issueVolume);
-		$issueMODS->assign('issue_issue', $issueIssue);
-		$issueMODS->assign('issue_edition', $issueIssue);
+		$issueMODS->assign('lccn_id', $this->lccnID);
+		$issueMODS->assign('issue_volume', $this->issueVolume);
+		$issueMODS->assign('issue_issue', $this->issueIssue);
+		$issueMODS->assign('issue_edition', $this->issueEdition);
 		$issueMODS->assign('non_sort_title', $titleArray[1]);
 		$issueMODS->assign('sort_title', $titleArray[2]);
 		$issueMODS->assign('iso_date', $this->getISODate());
 
-		if ( $missingPages !='' ) $issueMODS->assign('missing_pages', $missingPages);
+		if ( $this->missingPages !='' ) $issueMODS->assign('missing_pages', $this->missingPages);
 		$this->xml['MODS']=$issueMODS->fetch( join('/',array($templatePath,'issue_mods.tpl.php')) );
 	}
 
-	function assignRDF($contentModelPID, $parentCollectionPID, $issuePID, $templatePath){
+	function assignRDF($templatePath){
 		$issueRDF= new Smarty;
-		$issueRDF->assign('issue_pid', $issuePID);
-		$issueRDF->assign('issue_content_model_pid', $contentModelPID);
-		$issueRDF->assign('parent_collection_pid', $parentCollectionPID);
+		$issueRDF->assign('issue_pid', $this->pid);
+		$issueRDF->assign('issue_content_model_pid', $this->cModel);
+		$issueRDF->assign('parent_collection_pid', $this->parentCollectionPID);
 		$this->xml['RDF']=$issueRDF->fetch( join('/',array($templatePath,'issue_rdf.tpl.php')) );
 	}
 
@@ -71,8 +71,8 @@ class islandoraNewspaperImportIssue {
 		preg_match( '/^('.implode('|',$non_sort_words).')? *(.*)$/i' , $this->title, $titleArray);
 
 		// Assign Issue Metadata
-		$this->assignMODS($titleArray, $this->lccnID, $this->issueVolume, $this->issueIssue, $this->issueEdition, $this->missingPages, $templatePath);
-		$this->assignRDF($this->cModel, $this->parentCollectionPID, $this->pid, $templatePath);
+		$this->assignMODS($titleArray, $templatePath);
+		$this->assignRDF($templatePath);
 
 		// Build Pages
 		foreach ($imagesToImport as $curImageToImport) {
