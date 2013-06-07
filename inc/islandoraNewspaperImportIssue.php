@@ -24,7 +24,6 @@ class islandoraNewspaperImportIssue {
 	}
 
 	function addPages($filePathArray) {
-		// $fileArray glob(join('/',array($this->import_path,'*.[tT][iI][fF]')))
 		foreach ($filePathArray as $curImageFilePath) {
 			print $curImageFilePath;
 		}
@@ -63,6 +62,7 @@ class islandoraNewspaperImportIssue {
 	}
 
 	function createContent($imagesToImport, $pageContentModelPID, $templatePath) {
+		// TODO : Move this out!
 		$non_sort_words=array(
 				'the',
 				'a',
@@ -71,11 +71,9 @@ class islandoraNewspaperImportIssue {
 
 		preg_match( '/^('.implode('|',$non_sort_words).')? *(.*)$/i' , $this->title, $titleArray);
 
-		// Assign Issue Metadata
 		$this->assignMODS($titleArray, $templatePath);
 		$this->assignRDF($templatePath);
 
-		// Build Pages
 		foreach ($imagesToImport as $curImageToImport) {
 			$pageObject=new islandoraNewspaperImportPage($this->pid, $pageContentModelPID, $this->sourceMedia, $curImageToImport['pageno'], $curImageToImport['filepath'], $this->marcOrgID);
 			$pageObject->createContent($this->marcOrgID, $templatePath);
@@ -84,19 +82,6 @@ class islandoraNewspaperImportIssue {
 	}
 
 	function ingest() {
-		$issueRDF= new Smarty;
-		$label = $title . ' -- ' . $date;
-		$dsid = 'MODS';
-		$content_model_pid = 'islandora:issueCModel';
-		$collection_pid = 'newspapers:guardian';
-	}
-
-	// Deprecated?
-	function ingestPage($page) {
-		// $this->api->m->ingest(array('pid' => $this->testPid));
-		// $this->api->m->addDatastream($this->testPid, $this->testDsid, 'string', '<test> test </test>', NULL);
-		print "Ingesting ".print_r($page,TRUE);
-		// TODO: TRIGGER HOOKS THAT GENERATE SURROGATES
 	}
 
 	function setupParentCollection($api, $parentCollectionPID){
