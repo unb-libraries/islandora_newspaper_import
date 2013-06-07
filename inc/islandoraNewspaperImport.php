@@ -11,7 +11,6 @@ class islandoraNewspaperImport {
 		module_load_include('libraries/tuque', 'islandora', 'Object');
 		module_load_include('libraries/tuque', 'islandora', 'Repository');
 		module_load_include('libraries/tuque', 'islandora', 'TestHelpers');
-
 		$this->fedoraInit($repoURL,$repoUser,$repoPass);
 
 		$this->setupParentCollection($parentCollectionPID);
@@ -113,7 +112,7 @@ class islandoraNewspaperImport {
 	}
 
 	function validateSourcePath() {
-		if(!@include(join('/', array($this->import_path,'issue_metadata.php')))) die("Failed to load 'issue_metadata.php' from {$this->import_path}\n");
+		if(!@include(join('/', array($this->import_path,'issue_metadata.inc.php')))) die("Failed to load 'issue_metadata.inc.php' from {$this->import_path}\n");
 		if (sizeof(glob(join('/',array($this->import_path,'*.[tT][iI][fF]')))) < 1 ) die("No *.tif files exist in import path {$this->import_path}\n");
 	}
 }
