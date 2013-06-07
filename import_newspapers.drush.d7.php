@@ -17,6 +17,7 @@ $import = new islandoraNewspaperImport(
 										IMPORT_PATH
 										);
 $import->buildIssue(
+				SOURCE_MEDIA,
 				MARC_ORG_ID,
 				ISSUE_CONTENT_MODEL_PID,
 				PAGE_CONTENT_MODEL_PID,

@@ -2,8 +2,9 @@
 
 class islandoraNewspaperImportIssue {
 
-	function __construct($api, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages) {
+	function __construct($api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages) {
 		$this->marcOrgID=$marcOrgID;
+		$this->sourceMedia=$sourceMedia;
 		$this->setupNameSpace($api, $nameSpace);
 		$this->setupParentCollection($api, $parentCollectionPID);
 		$this->cModel=$issueContentModelPID;
@@ -76,7 +77,7 @@ class islandoraNewspaperImportIssue {
 
 		// Build Pages
 		foreach ($imagesToImport as $curImageToImport) {
-			$pageObject=new islandoraNewspaperImportPage($this->pid, $pageContentModelPID, $curImageToImport['pageno'], $curImageToImport['filepath']);
+			$pageObject=new islandoraNewspaperImportPage($this->pid, $pageContentModelPID, $this->sourceMedia, $curImageToImport['pageno'], $curImageToImport['filepath'], $this->marcOrgID);
 			$pageObject->createContent($this->marcOrgID, $templatePath);
 			$this->pages[]=$pageObject;
 		}
