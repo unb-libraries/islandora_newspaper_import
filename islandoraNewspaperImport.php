@@ -21,6 +21,15 @@ class islandoraNewspaperImport {
 		$this->validateIssueDate();
 
 		$this->issue=new islandoraNewspaperImportIssue($this);
+		$this->issuePageCounter=0;
+		$this->addPagesToIssue();
+	}
+
+	function addPagesToIssue() {
+		foreach (glob(join('/',array($this->import_path,'*.[tT][iI][fF]'))) as $cur_image_path) {
+			$this->issuePageCounter++;
+			print $cur_image_path;
+		}
 	}
 
 	function fedoraInit($repoURL,$repoUser,$repoPass) {
@@ -37,13 +46,16 @@ class islandoraNewspaperImport {
 		}
 	}
 
-	function ingestPage() {
+	function ingestPage($page) {
 		// $this->api->m->ingest(array('pid' => $this->testPid));
 		// $this->api->m->addDatastream($this->testPid, $this->testDsid, 'string', '<test> test </test>', NULL);
+		print "Ingesting ".print_r($page,TRUE);
 	}
 
 	function ingestIssue() {
-		
+		foreach ($this->issue->pages as $cur_page) {
+			ingestPage($cur_page);
+		}
 	}
 
 	function setupNameSpace($nameSpace) {
