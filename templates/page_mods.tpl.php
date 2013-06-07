@@ -15,8 +15,6 @@
         <physicalDescription>
             <form type="{$source_media}"/>
         </physicalDescription>
-        <identifier type="reel number">{$reel_number}</identifier>
-        <identifier type="reel sequence number">{$sequence_number}</identifier>
         <location>
             <physicalLocation authority="marcorg" displayLabel="Source Repository">{$marcorg_id}</physicalLocation>
         </location>
