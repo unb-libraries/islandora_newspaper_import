@@ -17,13 +17,14 @@ $import = new islandoraNewspaperImport(
 										IMPORT_PATH
 										);
 $import->buildIssue(
-				$import->api,
-				$import->imagesToImport,
+				MARC_ORG_ID,
 				ISSUE_CONTENT_MODEL_PID,
 				PAGE_CONTENT_MODEL_PID,
 				PARENT_PID,
 				BASE_NAMESPACE,
+				ISSUE_TITLE,
 				ISSUE_LCCN,
+				ISSUE_DATE,
 				ISSUE_VOLUME,
 				ISSUE_ISSUE,
 				ISSUE_EDITION,

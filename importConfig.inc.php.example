@@ -5,4 +5,4 @@ define('TEMPLATE_PATH', SCRIPT_ROOT."/templates");
 define('FEDORA_URL', '');
 define('FEDORA_USER', '');
 define('FEDORA_PASSWORD', '');
-define('MARC_ORG_CODE', '');
+define('MARC_ORG_ID', '');

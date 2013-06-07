@@ -2,9 +2,20 @@
 
 class islandoraNewspaperImportIssue {
 
-	function __construct() {
+	function __construct($api, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages) {
+		$this->marcOrgID=$marcOrgID;
+		$this->setupNameSpace($api, $nameSpace);
+		$this->setupParentCollection($api, $parentCollectionPID);
+		$this->cModel=$issueContentModelPID;
+		$this->lccnID=$lccnID;
+		$this->issueDate=$issueDate;
+		$this->issueVolume=$issueVolume;
+		$this->issueIssue=$issueIssue;
+		$this->issueEdition=$issueEdition;
+		$this->missingPages=$missingPages;
+		$this->title=$issueTitle;
+		$this->assignPID();
 		$this->pages=array();
-		$this->issueDate=date("Ymd",ISSUE_DATE);
 	}
 
 	function addPage($pageNumber, $imagePath) {
@@ -40,29 +51,34 @@ class islandoraNewspaperImportIssue {
 		$this->xml['RDF']=$issueRDF->fetch( join('/',array($templatePath,'issue_rdf.tpl.php')) );
 	}
 
-	function createContent($imagesToImport, $issueContentModelPID, $pageContentModelPID, $parentCollectionPID, $lccnID, $issueVolume, $issueIssue, $issueEdition, $missingPages, $templatePath) {
+	function assignPID() {
+		$this->pid=join(
+					":",
+					array(
+						$this->namespace,
+						$this->getISODate(),
+					)
+				);
+	}
+
+	function createContent($imagesToImport, $pageContentModelPID, $templatePath) {
 		$non_sort_words=array(
 				'the',
 				'a',
 				'an',
 				);
-		preg_match( '/^('.implode('|',$non_sort_words).')? *(.*)$/i' , ISSUE_TITLE, $titleArray);
 
-		$this->pid=join(
-							":",
-							array(
-								$this->namespace,
-								$this->getISODate(),
-							)
-						);
+		preg_match( '/^('.implode('|',$non_sort_words).')? *(.*)$/i' , $this->title, $titleArray);
 
 		// Assign Issue Metadata
-		$this->assignMODS($titleArray, $lccnID, $issueVolume, $issueIssue, $issueEdition, $missingPages, $templatePath);
-		$this->assignRDF($issueContentModelPID, $parentCollectionPID, $issuePID, $templatePath);
+		$this->assignMODS($titleArray, $this->lccnID, $this->issueVolume, $this->issueIssue, $this->issueEdition, $this->missingPages, $templatePath);
+		$this->assignRDF($this->cModel, $this->parentCollectionPID, $this->pid, $templatePath);
 
 		// Build Pages
 		foreach ($imagesToImport as $curImageToImport) {
-			$this->pages[]=new islandoraNewspaperImportPage($issuePID, $pageContentModelPID, $curImageToImport['pageno'],$curImageToImport['filepath']);
+			$pageObject=new islandoraNewspaperImportPage($this->pid, $pageContentModelPID, $curImageToImport['pageno'], $curImageToImport['filepath']);
+			$pageObject->createContent($this->marcOrgID, $templatePath);
+			$this->pages[]=$pageObject;
 		}
 	}
 

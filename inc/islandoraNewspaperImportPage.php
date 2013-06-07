@@ -12,8 +12,6 @@ class islandoraNewspaperImportPage {
 								)
 						);
 		$this->cModel=$pageContentModelString;
-		// Check image filepath exists
-		// Compute metrics
 	}
 
 	function createContent($marcOrgID, $templatePath) {
