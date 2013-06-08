@@ -139,6 +139,16 @@ class islandoraNewspaperImportIssue {
 			$pageDSMODS->logMessage = 'MODS datastream created using Newspapers batch ingest script || SUCCESS';
 			$pageObjectToIngest->ingestDatastream($pageDSMODS);
 
+			// TIFF
+			$pageDSTIFF = $pageObjectToIngest->constructDatastream('TIFF');
+			$pageDSTIFF->setContentFromFile($currentImportPage->image['filepath'], FALSE);
+			$pageDSTIFF->mimetype = 'image/tiff';
+			$pageDSTIFF->label = 'TIFF image';
+			$pageDSTIFF->checksum = TRUE;
+			$pageDSTIFF->checksumType = 'MD5';
+			$pageDSTIFF->logMessage = 'TIFF datastream created using Newspapers batch ingest script || SUCCESS';
+			$pageObjectToIngest->ingestDatastream($pageDSTIFF);
+
 			// DC
 			$pageDSDC = $pageObjectToIngest->constructDatastream('DC');
 			$pageDSDC->content = $currentImportPage->xml['DC'];
