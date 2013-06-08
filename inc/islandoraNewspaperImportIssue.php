@@ -92,7 +92,37 @@ class islandoraNewspaperImportIssue {
 		}
 	}
 
-	function ingest() {
+	function ingest($repository) {
+		// Create Object
+		$objectToIngest = $repository->constructObject($this->pid);
+
+		// MODS
+		$ds = $objectToIngest->constructDatastream('MODS');
+		$ds->content = $this->xml['MODS'];
+		$ds->mimetype = 'text/xml';
+		$ds->label = 'MODS Record';
+		$ds->checksum = TRUE;
+		$ds->checksumType = 'MD5';
+		$ds->logMessage = 'MODS datastream created using Newspapers batch ingest script || SUCCESS';
+		$objectToIngest->ingestDatastream($ds);
+
+		// DC
+		$ds = $objectToIngest->constructDatastream('DC');
+		$ds->content = $this->xml['DC'];
+		$ds->mimetype = 'text/xml';
+		$ds->label = 'DC Record';
+		$ds->logMessage = 'DC datastream created using Newspapers batch ingest script || SUCCESS';
+		$objectToIngest->ingestDatastream($ds);
+
+		// RDF
+		$ds = $objectToIngest->constructDatastream('RELS-EXT');
+		$ds->content = $this->xml['RELS-EXT'];
+		$ds->mimetype = 'application/rdf+xml';
+		$ds->label = 'Fedora Object to Object Relationship Metadata.';
+		$ds->logMessage = 'RELS-EXT datastream created using Newspapers batch ingest script || SUCCESS';
+		$objectToIngest->ingestDatastream($ds);
+
+		$repository->ingestObject($objectToIngest);
 	}
 
 	function setupParentCollection($api, $parentCollectionPID){

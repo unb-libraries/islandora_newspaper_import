@@ -15,8 +15,8 @@ class islandoraNewspaperImport {
 	}
 
 	function fedoraInit($repoURL,$repoUser,$repoPass) {
-		$connection = new RepositoryConnection($repoURL,$repoUser,$repoPass);
-		$this->api = new FedoraApi($connection);
+		$this->connection = new RepositoryConnection($repoURL,$repoUser,$repoPass);
+		$this->api = new FedoraApi($this->connection);
 		$cache = new SimpleCache();
 		$this->repository = new FedoraRepository($this->api, $cache);
 		try {
@@ -32,6 +32,9 @@ class islandoraNewspaperImport {
 		$this->issue=new islandoraNewspaperImportIssue($this->api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages);
 		$this->issue->createContent($this->imagesToImport, $pageContentModelPID, $templatePath, $xslPath);
 	}
+
+	function ingest() {
+		$this->issue->ingest($this->repository);
 	}
 
 	function setupSourceData($importPath) {
