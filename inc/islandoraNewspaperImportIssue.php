@@ -29,6 +29,15 @@ class islandoraNewspaperImportIssue {
 		}
 	}
 
+	function assignDC($xslPath){
+		$transformXSL = new DOMDocument();
+		$transformXSL->load(join('/', array($xslPath, 'mods_to_dc.xsl')));
+		$processor = new XSLTProcessor();
+		$processor->importStylesheet($transformXSL);
+		$this->xml['DC'] = new DOMDocument();
+		$this->xml['DC']->loadXML($processor->transformToXML($this->xml['MODS']));
+	}
+
 	function assignMODS($titleArray, $templatePath){
 		$issueMODS= new Smarty;
 		$issueMODS->assign('lccn_id', $this->lccnID);
@@ -74,6 +83,7 @@ class islandoraNewspaperImportIssue {
 
 		$this->assignMODS($titleArray, $templatePath);
 		$this->assignRDF($templatePath);
+		$this->assignDC($xslPath);
 
 		foreach ($imagesToImport as $curImageToImport) {
 			$pageObject=new islandoraNewspaperImportPage($this->pid, $pageContentModelPID, $this->sourceMedia, $curImageToImport['pageno'], $curImageToImport['filepath'], $this->marcOrgID);
