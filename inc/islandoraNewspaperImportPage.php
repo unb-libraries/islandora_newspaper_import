@@ -13,6 +13,15 @@ class islandoraNewspaperImportPage {
 		$this->assignPID();
 	}
 
+	function assignDC($xslPath){
+		$transformXSL = new DOMDocument();
+		$transformXSL->load(join('/', array($xslPath, 'mods_to_dc.xsl')));
+		$processor = new XSLTProcessor();
+		$processor->importStylesheet($transformXSL);
+		$this->xml['DC'] = new DOMDocument();
+		$this->xml['DC']->loadXML($processor->transformToXML($this->xml['MODS']));
+	}
+
 	function assignMODS($templatePath){
 		$pageMODS= new Smarty;
 		$pageMODS->assign('pid', $this->pid);
@@ -42,9 +51,10 @@ class islandoraNewspaperImportPage {
 		$this->xml['RDF']->loadXML($pageRDF->fetch( join('/',array($templatePath,'page_rdf.tpl.php')) ));
 	}
 
-	function createContent($marcOrgID, $templatePath) {
+	function createContent($marcOrgID, $templatePath, $xslPath) {
 		$this->assignMODS($templatePath);
 		$this->assignRDF($templatePath);
+		$this->assignDC($xslPath);
 		print_r($this);
 	}
 
