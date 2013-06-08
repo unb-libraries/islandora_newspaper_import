@@ -38,9 +38,9 @@ class islandoraNewspaperImportIssue {
 		$issueMODS->assign('non_sort_title', $titleArray[1]);
 		$issueMODS->assign('sort_title', $titleArray[2]);
 		$issueMODS->assign('iso_date', $this->getISODate());
-
 		if ( $this->missingPages !='' ) $issueMODS->assign('missing_pages', $this->missingPages);
-		$this->xml['MODS']=$issueMODS->fetch( join('/',array($templatePath,'issue_mods.tpl.php')) );
+		$this->xml['MODS'] = new DOMDocument();
+		$this->xml['MODS']->loadXML($issueMODS->fetch( join('/',array($templatePath,'issue_mods.tpl.php')) ));
 	}
 
 	function assignRDF($templatePath){
@@ -48,7 +48,8 @@ class islandoraNewspaperImportIssue {
 		$issueRDF->assign('issue_pid', $this->pid);
 		$issueRDF->assign('issue_content_model_pid', $this->cModel);
 		$issueRDF->assign('parent_collection_pid', $this->parentCollectionPID);
-		$this->xml['RDF']=$issueRDF->fetch( join('/',array($templatePath,'issue_rdf.tpl.php')) );
+		$this->xml['RDF'] = new DOMDocument();
+		$this->xml['RDF']->loadXML($issueRDF->fetch( join('/',array($templatePath,'issue_rdf.tpl.php')) ));
 	}
 
 	function assignPID() {

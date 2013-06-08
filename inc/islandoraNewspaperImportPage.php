@@ -20,7 +20,8 @@ class islandoraNewspaperImportPage {
 		$pageMODS->assign('sequence_number', $this->sequenceNumber);
 		$pageMODS->assign('source_media', $this->sourceMedia);
 		$pageMODS->assign('marcorg_id', $this->marcOrgID);
-		$this->xml['MODS']=$pageMODS->fetch( join('/',array($templatePath,'page_mods.tpl.php')) );
+		$this->xml['MODS'] = new DOMDocument();
+		$this->xml['MODS']->loadXML($pageMODS->fetch( join('/',array($templatePath,'page_mods.tpl.php')) ));
 	}
 
 	function assignPID(){
@@ -37,7 +38,8 @@ class islandoraNewspaperImportPage {
 		$pageRDF->assign('page_content_model_pid', $this->cModel);
 		$pageRDF->assign('page_number_short', $this->pageNumber);
 		$pageRDF->assign('parent_issue_pid', $this->parentPID);
-		$this->xml['RDF']=$pageRDF->fetch( join('/',array($templatePath,'page_rdf.tpl.php')) );
+		$this->xml['RDF'] = new DOMDocument();
+		$this->xml['RDF']->loadXML($pageRDF->fetch( join('/',array($templatePath,'page_rdf.tpl.php')) ));
 	}
 
 	function createContent($marcOrgID, $templatePath) {
