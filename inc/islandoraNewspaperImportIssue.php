@@ -94,67 +94,69 @@ class islandoraNewspaperImportIssue {
 
 	function ingest($repository) {
 		// ISSUE
-		$objectToIngest = $repository->constructObject($this->pid);
+		$issueObjectToIngest = $repository->constructObject($this->pid);
 
 		// MODS
-		$ds = $objectToIngest->constructDatastream('MODS');
-		$ds->content = $this->xml['MODS'];
-		$ds->mimetype = 'text/xml';
-		$ds->label = 'MODS Record';
-		$ds->checksum = TRUE;
-		$ds->checksumType = 'MD5';
-		$ds->logMessage = 'MODS datastream created using Newspapers batch ingest script || SUCCESS';
-		$objectToIngest->ingestDatastream($ds);
+		$issueDSMODS = $issueObjectToIngest ->constructDatastream('MODS');
+		$issueDSMODS->content = $this->xml['MODS'];
+		$issueDSMODS->mimetype = 'text/xml';
+		$issueDSMODS->label = 'MODS Record';
+		$issueDSMODS->checksum = TRUE;
+		$issueDSMODS->checksumType = 'MD5';
+		$issueDSMODS->logMessage = 'MODS datastream created using Newspapers batch ingest script || SUCCESS';
+		$issueObjectToIngest->ingestDatastream($issueDSMODS);
 
 		// DC
-		$ds = $objectToIngest->constructDatastream('DC');
-		$ds->content = $this->xml['DC'];
-		$ds->mimetype = 'text/xml';
-		$ds->label = 'DC Record';
-		$ds->logMessage = 'DC datastream created using Newspapers batch ingest script || SUCCESS';
-		$objectToIngest->ingestDatastream($ds);
+		$issueDSDC = $issueObjectToIngest->constructDatastream('DC');
+		$issueDSDC->content = $this->xml['DC'];
+		$issueDSDC->mimetype = 'text/xml';
+		$issueDSDC->label = 'DC Record';
+		$issueDSDC->logMessage = 'DC datastream created using Newspapers batch ingest script || SUCCESS';
+		$issueObjectToIngest->ingestDatastream($issueDSDC);
 
 		// RDF
-		$ds = $objectToIngest->constructDatastream('RELS-EXT');
-		$ds->content = $this->xml['RDF'];
-		$ds->mimetype = 'application/rdf+xml';
-		$ds->label = 'Fedora Object to Object Relationship Metadata.';
-		$ds->logMessage = 'RELS-EXT datastream created using Newspapers batch ingest script || SUCCESS';
-		$objectToIngest->ingestDatastream($ds);
+		$issueDSRDF = $issueObjectToIngest->constructDatastream('RELS-EXT');
+		$issueDSRDF->content = $this->xml['RDF'];
+		$issueDSRDF->mimetype = 'application/rdf+xml';
+		$issueDSRDF->label = 'Fedora Object to Object Relationship Metadata.';
+		$issueDSRDF->logMessage = 'RELS-EXT datastream created using Newspapers batch ingest script || SUCCESS';
+		$issueObjectToIngest->ingestDatastream($issueDSRDF);
 
-		$repository->ingestObject($objectToIngest);
+		$repository->ingestObject($issueObjectToIngest);
+		islandora_newspaper_islandora_newspaperissuecmodel_mods_islandora_datastream_ingested($issueObjectToIngest, $issueDSMODS);
 
 		// PAGES
 		foreach ($this->pages as $currentImportPage) {
-			$objectToIngest = $repository->constructObject($currentImportPage->pid);
+			$pageObjectToIngest = $repository->constructObject($currentImportPage->pid);
 
 			// MODS
-			$ds = $objectToIngest->constructDatastream('MODS');
-			$ds->content = $currentImportPage->xml['MODS'];
-			$ds->mimetype = 'text/xml';
-			$ds->label = 'MODS Record';
-			$ds->checksum = TRUE;
-			$ds->checksumType = 'MD5';
-			$ds->logMessage = 'MODS datastream created using Newspapers batch ingest script || SUCCESS';
-			$objectToIngest->ingestDatastream($ds);
+			$pageDSMODS = $pageObjectToIngest->constructDatastream('MODS');
+			$pageDSMODS->content = $currentImportPage->xml['MODS'];
+			$pageDSMODS->mimetype = 'text/xml';
+			$pageDSMODS->label = 'MODS Record';
+			$pageDSMODS->checksum = TRUE;
+			$pageDSMODS->checksumType = 'MD5';
+			$pageDSMODS->logMessage = 'MODS datastream created using Newspapers batch ingest script || SUCCESS';
+			$pageObjectToIngest->ingestDatastream($pageDSMODS);
 
 			// DC
-			$ds = $objectToIngest->constructDatastream('DC');
-			$ds->content = $currentImportPage->xml['DC'];
-			$ds->mimetype = 'text/xml';
-			$ds->label = 'DC Record';
-			$ds->logMessage = 'DC datastream created using Newspapers batch ingest script || SUCCESS';
-			$objectToIngest->ingestDatastream($ds);
+			$pageDSDC = $pageObjectToIngest->constructDatastream('DC');
+			$pageDSDC->content = $currentImportPage->xml['DC'];
+			$pageDSDC->mimetype = 'text/xml';
+			$pageDSDC->label = 'DC Record';
+			$pageDSDC->logMessage = 'DC datastream created using Newspapers batch ingest script || SUCCESS';
+			$pageObjectToIngest->ingestDatastream($pageDSDC);
 
 			// RDF
-			$ds = $objectToIngest->constructDatastream('RELS-EXT');
-			$ds->content = $currentImportPage->xml['RDF'];
-			$ds->mimetype = 'application/rdf+xml';
-			$ds->label = 'Fedora Object to Object Relationship Metadata.';
-			$ds->logMessage = 'RELS-EXT datastream created using Newspapers batch ingest script || SUCCESS';
-			$objectToIngest->ingestDatastream($ds);
+			$pageDSRDF = $pageObjectToIngest->constructDatastream('RELS-EXT');
+			$pageDSRDF->content = $currentImportPage->xml['RDF'];
+			$pageDSRDF->mimetype = 'application/rdf+xml';
+			$pageDSRDF->label = 'Fedora Object to Object Relationship Metadata.';
+			$pageDSRDF->logMessage = 'RELS-EXT datastream created using Newspapers batch ingest script || SUCCESS';
+			$pageObjectToIngestt->ingestDatastream($pageDSRDF);
 
-			$repository->ingestObject($objectToIngest);
+			$repository->ingestObject($pageObjectToIngest);
+			islandora_newspaper_islandora_newspaperpagecmodel_islandora_object_ingested($pageObjectToIngest);
 		}
 	}
 
