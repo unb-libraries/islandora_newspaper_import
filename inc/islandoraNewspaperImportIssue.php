@@ -62,7 +62,7 @@ class islandoraNewspaperImportIssue {
 				);
 	}
 
-	function createContent($imagesToImport, $pageContentModelPID, $templatePath) {
+	function createContent($imagesToImport, $pageContentModelPID, $templatePath, $xslPath) {
 		// TODO : Move this out!
 		$non_sort_words=array(
 				'the',

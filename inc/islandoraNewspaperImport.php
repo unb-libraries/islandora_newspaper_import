@@ -28,9 +28,10 @@ class islandoraNewspaperImport {
 		}
 	}
 
-	function buildIssue($sourceMedia, $marcOrgID, $issueContentModelPID, $pageContentModelPID, $parentCollectionPID, $nameSpace, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $templatePath) {
+	function buildIssue($sourceMedia, $marcOrgID, $issueContentModelPID, $pageContentModelPID, $parentCollectionPID, $nameSpace, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $templatePath, $xslPath) {
 		$this->issue=new islandoraNewspaperImportIssue($this->api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages);
-		$this->issue->createContent($this->imagesToImport, $pageContentModelPID, $templatePath);
+		$this->issue->createContent($this->imagesToImport, $pageContentModelPID, $templatePath, $xslPath);
+	}
 	}
 
 	function setupSourceData($importPath) {

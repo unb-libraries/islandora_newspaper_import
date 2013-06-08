@@ -30,5 +30,8 @@ $import->buildIssue(
 				ISSUE_ISSUE,
 				ISSUE_EDITION,
 				MISSING_PAGES,
-				TEMPLATE_PATH
+				TEMPLATE_PATH,
+				XSL_PATH
 );
+
+$import->ingest();
