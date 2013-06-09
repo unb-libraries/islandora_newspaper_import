@@ -1,9 +1,0 @@
-<?php
-
-define('SCRIPT_ROOT', '');
-define('TEMPLATE_PATH', SCRIPT_ROOT."/templates");
-define('XSL_PATH', SCRIPT_ROOT."/xsl");
-define('FEDORA_URL', '');
-define('FEDORA_USER', '');
-define('FEDORA_PASSWORD', '');
-define('MARC_ORG_ID', '');
