@@ -1,5 +1,4 @@
 <?php
-
 require_once('inc/islandoraNewspaperImport.php');
 require_once('inc/islandoraNewspaperImportIssue.php');
 require_once('inc/islandoraNewspaperImportPage.php');
@@ -28,7 +27,6 @@ function islandora_newspaper_ingest_drush_command() {
 }
 
 function drush_islandora_newspaper_ingest_islandora_ingest_newspapers($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id) {
-
 	$core = DRUSH_DRUPAL_CORE;
 	require_once $core . '/includes/bootstrap.inc';
 	require_once $core . '/includes/common.inc';
