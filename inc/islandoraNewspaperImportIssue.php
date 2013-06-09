@@ -15,6 +15,7 @@ class islandoraNewspaperImportIssue {
 		$this->issueEdition=$issueEdition;
 		$this->missingPages=$missingPages;
 		$this->title=$issueTitle;
+		$this->sequenceNumber=1;
 		$this->assignPID();
 		$this->pages=array();
 		$this->assignTemplatePath();
@@ -59,6 +60,8 @@ class islandoraNewspaperImportIssue {
 		$issueRDF->assign('issue_pid', $this->pid);
 		$issueRDF->assign('issue_content_model_pid', $this->cModel);
 		$issueRDF->assign('parent_collection_pid', $this->parentCollectionPID);
+		$issueRDF->assign('sequence_number', $this->sequenceNumber);
+		$issueRDF->assign('date_issued', date("Y-m-d",$this->issueDate));
 		$this->xml['RDF'] = new DOMDocument();
 		$this->xml['RDF']->loadXML($issueRDF->fetch(join('/', array($this->templatepath, 'issue_rdf.tpl.php'))));
 	}
