@@ -46,6 +46,7 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspapers($import_pa
 											$fedora_password,
 											$import_path
 											);
+
 	$import->buildIssue(
 					SOURCE_MEDIA,
 					$marcorg_id,
@@ -61,7 +62,6 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspapers($import_pa
 					ISSUE_EDITION,
 					MISSING_PAGES
 	);
-
 
 	$import->ingest();
 }
