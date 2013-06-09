@@ -95,6 +95,7 @@ class islandoraNewspaperImportIssue {
 	}
 
 	function ingest($repository) {
+		// TODO : refactor
 		// ISSUE
 		$issueObjectToIngest = $repository->constructObject($this->pid);
 
