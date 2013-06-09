@@ -61,9 +61,7 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspapers($import_pa
 					ISSUE_VOLUME,
 					ISSUE_ISSUE,
 					ISSUE_EDITION,
-					MISSING_PAGES,
-					'',
-					''
+					MISSING_PAGES
 	);
 	print_r($import);
 

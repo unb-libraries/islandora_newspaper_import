@@ -17,6 +17,8 @@ class islandoraNewspaperImportIssue {
 		$this->title=$issueTitle;
 		$this->assignPID();
 		$this->pages=array();
+		$this->assignTemplatePath();
+		$this->assignXSLPath();
 	}
 
 	function addPage($pageNumber, $imagePath) {
@@ -29,16 +31,16 @@ class islandoraNewspaperImportIssue {
 		}
 	}
 
-	function assignDC($xslPath){
+	function assignDC(){
 		$transformXSL = new DOMDocument();
-		$transformXSL->load(join('/', array($xslPath, 'mods_to_dc.xsl')));
+		$transformXSL->load(join('/', array($this->XSLpath, 'mods_to_dc.xsl')));
 		$processor = new XSLTProcessor();
 		$processor->importStylesheet($transformXSL);
 		$this->xml['DC'] = new DOMDocument();
 		$this->xml['DC']->loadXML($processor->transformToXML($this->xml['MODS']));
 	}
 
-	function assignMODS($titleArray, $templatePath){
+	function assignMODS($titleArray){
 		$issueMODS= new Smarty;
 		$issueMODS->assign('lccn_id', $this->lccnID);
 		$issueMODS->assign('issue_volume', $this->issueVolume);
@@ -49,16 +51,16 @@ class islandoraNewspaperImportIssue {
 		$issueMODS->assign('iso_date', $this->getISODate());
 		if ( $this->missingPages !='' ) $issueMODS->assign('missing_pages', $this->missingPages);
 		$this->xml['MODS'] = new DOMDocument();
-		$this->xml['MODS']->loadXML($issueMODS->fetch( join('/',array($templatePath,'issue_mods.tpl.php')) ));
+		$this->xml['MODS']->loadXML($issueMODS->fetch(join('/', array($this->templatepath, 'issue_mods.tpl.php'))));
 	}
 
-	function assignRDF($templatePath){
+	function assignRDF(){
 		$issueRDF= new Smarty;
 		$issueRDF->assign('issue_pid', $this->pid);
 		$issueRDF->assign('issue_content_model_pid', $this->cModel);
 		$issueRDF->assign('parent_collection_pid', $this->parentCollectionPID);
 		$this->xml['RDF'] = new DOMDocument();
-		$this->xml['RDF']->loadXML($issueRDF->fetch( join('/',array($templatePath,'issue_rdf.tpl.php')) ));
+		$this->xml['RDF']->loadXML($issueRDF->fetch(join('/', array($this->templatepath, 'issue_rdf.tpl.php'))));
 	}
 
 	function assignPID() {
@@ -71,7 +73,7 @@ class islandoraNewspaperImportIssue {
 				);
 	}
 
-	function createContent($imagesToImport, $pageContentModelPID, $templatePath, $xslPath) {
+	function createContent($imagesToImport, $pageContentModelPID) {
 		// TODO : Move this out!
 		$non_sort_words=array(
 				'the',
@@ -81,13 +83,13 @@ class islandoraNewspaperImportIssue {
 
 		preg_match( '/^('.implode('|',$non_sort_words).')? *(.*)$/i' , $this->title, $titleArray);
 
-		$this->assignMODS($titleArray, $templatePath);
-		$this->assignRDF($templatePath);
-		$this->assignDC($xslPath);
+		$this->assignMODS($titleArray);
+		$this->assignRDF();
+		$this->assignDC();
 
 		foreach ($imagesToImport as $curImageToImport) {
 			$pageObject=new islandoraNewspaperImportPage($this->pid, $pageContentModelPID, $this->sourceMedia, $curImageToImport['pageno'], $curImageToImport['filepath'], $this->marcOrgID);
-			$pageObject->createContent($this->marcOrgID, $templatePath, $xslPath);
+			$pageObject->createContent($this->marcOrgID);
 			$this->pages[]=$pageObject;
 		}
 	}
@@ -210,4 +212,15 @@ class islandoraNewspaperImportIssue {
 		}
 	}
 
+	function assignTemplatePath() {
+		$reflector = new ReflectionClass(get_class($this));
+		$fn = $reflector->getFileName();
+		$this->templatepath=dirname($fn). '/../templates';
+	}
+
+	function assignXSLPath() {
+		$reflector = new ReflectionClass(get_class($this));
+		$fn = $reflector->getFileName();
+		$this->XSLpath=dirname($fn). '/../xsl';
+	}
 }
