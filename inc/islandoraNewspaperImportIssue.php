@@ -2,7 +2,7 @@
 
 class islandoraNewspaperImportIssue {
 
-	function __construct($api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages) {
+	function __construct($api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $issueLanguage) {
 		$this->marcOrgID=$marcOrgID;
 		$this->sourceMedia=$sourceMedia;
 		$this->setupNameSpace($api, $nameSpace);
@@ -15,6 +15,7 @@ class islandoraNewspaperImportIssue {
 		$this->issueEdition=$issueEdition;
 		$this->missingPages=$missingPages;
 		$this->title=$issueTitle;
+		$this->issueLanguage=$issueLanguage;
 		$this->sequenceNumber=1;
 		$this->assignPID();
 		$this->pages=array();
@@ -91,7 +92,7 @@ class islandoraNewspaperImportIssue {
 		$this->assignDC();
 
 		foreach ($imagesToImport as $curImageToImport) {
-			$pageObject=new islandoraNewspaperImportPage($this->pid, $pageContentModelPID, $this->sourceMedia, $curImageToImport['pageno'], $curImageToImport['filepath'], $this->marcOrgID);
+			$pageObject=new islandoraNewspaperImportPage($this->pid, $pageContentModelPID, $this->sourceMedia, $curImageToImport['pageno'], $curImageToImport['filepath'], $this->marcOrgID, $this->issueLanguage);
 			$pageObject->createContent($this->marcOrgID);
 			$this->pages[]=$pageObject;
 		}

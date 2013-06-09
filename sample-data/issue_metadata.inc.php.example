@@ -11,3 +11,4 @@ define('ISSUE_EDITION', '');
 define('MISSING_PAGES', '');
 define('ISSUE_CONTENT_MODEL_PID', '');
 define('PAGE_CONTENT_MODEL_PID', '');
+define('ISSUE_LANGUAGE', '');

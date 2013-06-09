@@ -2,10 +2,12 @@
 
 class islandoraNewspaperImportPage {
 
-	function __construct($parentPID, $pageContentModelString, $sourceMedia, $pageNumber, $imageFilePath, $marcOrgID) {
+	function __construct($parentPID, $pageContentModelString, $sourceMedia, $pageNumber, $imageFilePath, $marcOrgID, $pageLanguage) {
 		$this->pageNumber=$pageNumber;
 		$this->sourceMedia=$sourceMedia;
-		$this->sequenceNumber=1;
+		$this->sequenceNumber=$this->pageNumber;
+		$this->sectionNumber=1;
+		$this->pageLanguage=$pageLanguage;
 		$this->image['filepath']=$imageFilePath;
 		$this->parentPID=$parentPID;
 		$this->cModel=$pageContentModelString;
@@ -49,6 +51,9 @@ class islandoraNewspaperImportPage {
 		$pageRDF->assign('page_content_model_pid', $this->cModel);
 		$pageRDF->assign('page_number_short', $this->pageNumber);
 		$pageRDF->assign('parent_issue_pid', $this->parentPID);
+		$pageRDF->assign('sequence_number', $this->sequenceNumber);
+		$pageRDF->assign('section_number', $this->sectionNumber);
+		$pageRDF->assign('page_language', $this->pageLanguage);
 		$this->xml['RDF'] = new DOMDocument();
 		$this->xml['RDF']->loadXML($pageRDF->fetch( join('/',array($this->templatepath,'page_rdf.tpl.php')) ));
 	}
