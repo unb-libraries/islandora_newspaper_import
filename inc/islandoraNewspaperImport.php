@@ -3,12 +3,6 @@
 class islandoraNewspaperImport {
 
 	function __construct($repoURL,$repoUser,$repoPass,$importPath) {
-		module_load_include('libraries/tuque', 'islandora', 'FedoraApi');
-		module_load_include('libraries/tuque', 'islandora', 'FedoraApiSerializer');
-		module_load_include('libraries/tuque', 'islandora', 'Object');
-		module_load_include('libraries/tuque', 'islandora', 'Repository');
-		module_load_include('libraries/tuque', 'islandora', 'TestHelpers');
-
 		$this->fedoraInit($repoURL,$repoUser,$repoPass);
 		$this->setupSourceData($importPath);
 		$this->validateConfigData();
