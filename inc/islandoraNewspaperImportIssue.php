@@ -97,11 +97,11 @@ class islandoraNewspaperImportIssue {
 	function ingest($repository) {
 		// TODO : refactor
 		// ISSUE
-		$issueObjectToIngest = $repository->constructObject($this->pid);
+		$issueObjectToIngest = new NewFedoraObject($this->pid, $repository);
 
 		// MODS
-		$issueDSMODS = $issueObjectToIngest ->constructDatastream('MODS');
-		$issueDSMODS->content = $this->xml['MODS'];
+		$issueDSMODS = new NewFedoraDatastream('MODS', 'X', $issueObjectToIngest, $repository);
+		$issueDSMODS->content = $this->xml['MODS']->saveXML();
 		$issueDSMODS->mimetype = 'text/xml';
 		$issueDSMODS->label = 'MODS Record';
 		$issueDSMODS->checksum = TRUE;
@@ -110,16 +110,16 @@ class islandoraNewspaperImportIssue {
 		$issueObjectToIngest->ingestDatastream($issueDSMODS);
 
 		// DC
-		$issueDSDC = $issueObjectToIngest->constructDatastream('DC');
-		$issueDSDC->content = $this->xml['DC'];
+		$issueDSDC = new NewFedoraDatastream('DC', 'X', $issueObjectToIngest, $repository);
+		$issueDSDC->content = $this->xml['DC']->saveXML();
 		$issueDSDC->mimetype = 'text/xml';
 		$issueDSDC->label = 'DC Record';
 		$issueDSDC->logMessage = 'DC datastream created using Newspapers batch ingest script || SUCCESS';
 		$issueObjectToIngest->ingestDatastream($issueDSDC);
 
 		// RDF
-		$issueDSRDF = $issueObjectToIngest->constructDatastream('RELS-EXT');
-		$issueDSRDF->content = $this->xml['RDF'];
+		$issueDSRDF = new NewFedoraDatastream('RELS-EXT', 'X', $issueObjectToIngest, $repository);
+		$issueDSRDF->content = $this->xml['RDF']->saveXML();
 		$issueDSRDF->mimetype = 'application/rdf+xml';
 		$issueDSRDF->label = 'Fedora Object to Object Relationship Metadata.';
 		$issueDSRDF->logMessage = 'RELS-EXT datastream created using Newspapers batch ingest script || SUCCESS';
@@ -130,11 +130,11 @@ class islandoraNewspaperImportIssue {
 
 		// PAGES
 		foreach ($this->pages as $currentImportPage) {
-			$pageObjectToIngest = $repository->constructObject($currentImportPage->pid);
+			$pageObjectToIngest = new NewFedoraObject($currentImportPage->pid, $repository);
 
 			// MODS
-			$pageDSMODS = $pageObjectToIngest->constructDatastream('MODS');
-			$pageDSMODS->content = $currentImportPage->xml['MODS'];
+			$pageDSMODS =new NewFedoraDatastream('MODS', 'X', $issueObjectToIngest, $repository);
+			$pageDSMODS->content = $currentImportPage->xml['MODS']->saveXML();
 			$pageDSMODS->mimetype = 'text/xml';
 			$pageDSMODS->label = 'MODS Record';
 			$pageDSMODS->checksum = TRUE;
@@ -143,7 +143,7 @@ class islandoraNewspaperImportIssue {
 			$pageObjectToIngest->ingestDatastream($pageDSMODS);
 
 			// TIFF
-			$pageDSTIFF = $pageObjectToIngest->constructDatastream('TIFF');
+			$pageDSTIFF = new NewFedoraDatastream('TIFF', 'M', $issueObjectToIngest, $repository);
 			$pageDSTIFF->setContentFromFile($currentImportPage->image['filepath'], FALSE);
 			$pageDSTIFF->mimetype = 'image/tiff';
 			$pageDSTIFF->label = 'TIFF image';
@@ -153,20 +153,20 @@ class islandoraNewspaperImportIssue {
 			$pageObjectToIngest->ingestDatastream($pageDSTIFF);
 
 			// DC
-			$pageDSDC = $pageObjectToIngest->constructDatastream('DC');
-			$pageDSDC->content = $currentImportPage->xml['DC'];
+			$pageDSDC = new NewFedoraDatastream('TIFF', 'X', $issueObjectToIngest, $repository);
+			$pageDSDC->content = $currentImportPage->xml['DC']->saveXML();
 			$pageDSDC->mimetype = 'text/xml';
 			$pageDSDC->label = 'DC Record';
 			$pageDSDC->logMessage = 'DC datastream created using Newspapers batch ingest script || SUCCESS';
 			$pageObjectToIngest->ingestDatastream($pageDSDC);
 
 			// RDF
-			$pageDSRDF = $pageObjectToIngest->constructDatastream('RELS-EXT');
-			$pageDSRDF->content = $currentImportPage->xml['RDF'];
+			$pageDSRDF = new NewFedoraDatastream('RELS-EXT', 'X', $issueObjectToIngest, $repository);
+			$pageDSRDF->content = $currentImportPage->xml['RDF']->saveXML();
 			$pageDSRDF->mimetype = 'application/rdf+xml';
 			$pageDSRDF->label = 'Fedora Object to Object Relationship Metadata.';
 			$pageDSRDF->logMessage = 'RELS-EXT datastream created using Newspapers batch ingest script || SUCCESS';
-			$pageObjectToIngestt->ingestDatastream($pageDSRDF);
+			$pageObjectToIngest->ingestDatastream($pageDSRDF);
 
 			$repository->ingestObject($pageObjectToIngest);
 			islandora_newspaper_islandora_newspaperpagecmodel_islandora_object_ingested($pageObjectToIngest);
