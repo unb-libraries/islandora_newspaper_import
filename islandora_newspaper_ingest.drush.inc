@@ -8,11 +8,11 @@ require_once('lib/smarty/distribution/libs/Smarty.class.php');
 function islandora_newspaper_ingest_drush_command() {
 	$items = array();
 	$items['islandora_ingest_newspapers'] = array(
-		'description' => "Creates the parent issue object and uploads the pages as child objects",
+		'description' => "Creates a newspaper issue object and its page children.",
 		'arguments' => array(
 			'import_path' => 'The path to the directory that contains the newspaper pages in TIF format',
-			'parent_pid' => 'if TRUE then you will be asked to confirm the update for each object',
-			'base_namespace' => 'The reel number',
+			'parent_pid' => 'The PID of the collection that will contain the issue.',
+			'base_namespace' => 'The base namespace to use for the issue',
 			'fedora_url' => 'The full url, including port number to the fedora repository',
 			'fedora_user' => 'A user with full write access to the fedora repository',
 			'fedora_password' => 'Password for the fedora user',
