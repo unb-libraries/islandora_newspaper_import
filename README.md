@@ -1,5 +1,5 @@
-# Islandora Newspaper Issue Ingest
-This drush command leverages the Islandora Newspaper Solution pack to ingest newspaper issues into a fedora repository.
+# Islandora Newspaper Object Ingest
+This drush command leverages the Islandora Newspaper Solution Pack to ingest a newspaper issue object into a fedora commons repository.
 
 This development was based on a model originally written by Paul Pound at UPEI (https://github.com/roblib/scripts/blob/master/drush/drupal7/islandora_newspapers.drush.inc).
 
