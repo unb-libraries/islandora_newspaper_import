@@ -21,7 +21,7 @@ function islandora_newspaper_ingest_drush_command() {
 		'examples' => array(
 			'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_newspaper_ingest http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph',
 		),
-		'aliases' => array('islandoranews'),
+		'aliases' => array('ingestpaper'),
 		'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
 	);
 	return $items;
