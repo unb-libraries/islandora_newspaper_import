@@ -186,7 +186,7 @@ class islandoraNewspaperImportIssue {
 	}
 
 	function getISODate() {
-		return date("Ymd",$this->issueDate);
+		return date("Y-m-d",$this->issueDate);
 	}
 
 	function validateNameSpace($api) {
