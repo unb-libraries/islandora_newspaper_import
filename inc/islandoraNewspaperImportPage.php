@@ -62,7 +62,6 @@ class islandoraNewspaperImportPage {
 		$this->assignMODS();
 		$this->assignRDF();
 		$this->assignDC();
-		print_r($this);
 	}
 
 	function assignTemplatePath() {
