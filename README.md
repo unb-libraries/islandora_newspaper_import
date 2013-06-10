@@ -14,6 +14,8 @@ Some assumptions about the source data are made for the sake of sanity:
 Install this script as a drush command.
 
 ## Use
+For the kakadu based JP2 encoding to correctly function, make sure the LD_LIBRARY_PATH environment variable is set and reflects the location of libkdu_*.so.
+
 The required arguments, in order, are:
 +   import_path : The path to the directory that contains the newspaper pages in TIF format
 +   parent_pid : The PID of the collection that will contain the issue.
