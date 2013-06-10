@@ -104,7 +104,7 @@ class islandoraNewspaperImportIssue {
 		$issueObjectToIngest = new NewFedoraObject($this->pid, $repository);
 
 		// MODS
-		$issueDSMODS = new NewFedoraDatastream('MODS', 'X', $issueObjectToIngest, $repository);
+		$issueDSMODS = new NewFedoraDatastream('MODS', 'M', $issueObjectToIngest, $repository);
 		$issueDSMODS->content = $this->xml['MODS']->saveXML();
 		$issueDSMODS->mimetype = 'text/xml';
 		$issueDSMODS->label = 'MODS Record';
@@ -136,18 +136,8 @@ class islandoraNewspaperImportIssue {
 		foreach ($this->pages as $currentImportPage) {
 			$pageObjectToIngest = new NewFedoraObject($currentImportPage->pid, $repository);
 
-			// MODS
-			$pageDSMODS =new NewFedoraDatastream('MODS', 'X', $issueObjectToIngest, $repository);
-			$pageDSMODS->content = $currentImportPage->xml['MODS']->saveXML();
-			$pageDSMODS->mimetype = 'text/xml';
-			$pageDSMODS->label = 'MODS Record';
-			$pageDSMODS->checksum = TRUE;
-			$pageDSMODS->checksumType = 'MD5';
-			$pageDSMODS->logMessage = 'MODS datastream created using Newspapers batch ingest script || SUCCESS';
-			$pageObjectToIngest->ingestDatastream($pageDSMODS);
-
 			// TIFF
-			$pageDSTIFF = new NewFedoraDatastream('TIFF', 'M', $issueObjectToIngest, $repository);
+			$pageDSTIFF = new NewFedoraDatastream('OBJ', 'M', $issueObjectToIngest, $repository);
 			$pageDSTIFF->setContentFromFile($currentImportPage->image['filepath'], FALSE);
 			$pageDSTIFF->mimetype = 'image/tiff';
 			$pageDSTIFF->label = 'TIFF image';
