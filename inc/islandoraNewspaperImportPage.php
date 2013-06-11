@@ -75,4 +75,8 @@ class islandoraNewspaperImportPage {
 		$fn = $reflector->getFileName();
 		$this->XSLpath=dirname($fn). '/../xsl';
 	}
+
+	function getLabel() {
+		return ("Page {$this->pageNumber}");
+	}
 }

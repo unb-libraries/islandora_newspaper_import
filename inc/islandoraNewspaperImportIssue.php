@@ -102,6 +102,7 @@ class islandoraNewspaperImportIssue {
 		// TODO : refactor
 		// ISSUE
 		$issueObjectToIngest = new NewFedoraObject($this->pid, $repository);
+		$issueObjectToIngest->label = $this->getLabel();
 
 		// MODS
 		$issueDSMODS = new NewFedoraDatastream('MODS', 'M', $issueObjectToIngest, $repository);
@@ -135,6 +136,7 @@ class islandoraNewspaperImportIssue {
 		// PAGES
 		foreach ($this->pages as $currentImportPage) {
 			$pageObjectToIngest = new NewFedoraObject($currentImportPage->pid, $repository);
+			$pageObjectToIngest->label = $currentImportPage->getLabel();
 
 			// TIFF
 			$pageDSTIFF = new NewFedoraDatastream('OBJ', 'M', $issueObjectToIngest, $repository);
@@ -217,5 +219,9 @@ class islandoraNewspaperImportIssue {
 		$reflector = new ReflectionClass(get_class($this));
 		$fn = $reflector->getFileName();
 		$this->XSLpath=dirname($fn). '/../xsl';
+	}
+
+	function getLabel() {
+		return ("Volume {$this->issueVolume}, Number {$this->issueIssue}");
 	}
 }
