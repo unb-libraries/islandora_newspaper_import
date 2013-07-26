@@ -53,12 +53,11 @@ class islandoraNewspaperImport {
 		$must_exist_data=array(
 				'ISSUE_TITLE',
 				'ISSUE_MEDIA',
-				'ISSUE_LCCN',
 				'ISSUE_VOLUME',
 				'ISSUE_ISSUE',
-				'ISSUE_EDITION',
+				# 'ISSUE_EDITION',
 				);
-		foreach ($must_exist_data as $cur_data) if (!constant($cur_data) || constant($cur_data) == '') die ("$cur_data is not set in issue_metadata.inc.php\n");
+		foreach ($must_exist_data as $cur_data) if (!constant($cur_data) || constant($cur_data) == '') die ("$cur_data is not set in metadata.php\n");
 	}
 
 	function validateIssueDate(){
@@ -68,7 +67,7 @@ class islandoraNewspaperImport {
 	}
 
 	function validateSourcePath() {
-		if(!@include(join('/', array($this->import_path,'issue_metadata.inc.php')))) die("Failed to load 'issue_metadata.inc.php' from {$this->import_path}\n");
+		if(!@include(join('/', array($this->import_path,'metadata.php')))) die("Failed to load 'metadata.php' from {$this->import_path}\n");
 		if (sizeof($this->imagesToImport) < 1 ) die("No *.tif files exist in import path {$this->import_path}\n");
 	}
 }
