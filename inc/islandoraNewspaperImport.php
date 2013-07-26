@@ -38,9 +38,10 @@ class islandoraNewspaperImport {
 			$this->import_path=$importPath;
 		}
 		$this->imagesToImport=array();
-		foreach (glob(join('/',array($this->import_path,'*.[tT][iI][fF]'))) as $filePathToImport) {
+		$file_list=glob(join('/',array($this->import_path,'*.[tT][iI][fF]')));
+		foreach ($file_list as $filePathToImport) {
 			$this->imagesToImport[]=array(
-								'pageno' => ltrim(array_shift(explode('.', basename($filePathToImport))), '0'),
+								'pageno' => str_replace('.tif','', array_pop(explode('_', basename($filePathToImport)))),
 								'filepath' => $filePathToImport
 								);
 		}
