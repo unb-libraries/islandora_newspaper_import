@@ -16,6 +16,7 @@ function islandora_newspaper_ingest_drush_command() {
 			'fedora_user' => 'A user with full write access to the fedora repository',
 			'fedora_password' => 'Password for the fedora user',
 			'marcorg_id' => 'The content creator marcorg ID code',
+			'special_identifier' => 'A special identifier used for identifying supplements, etc.',
 		),
 		'examples' => array(
 			'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_newspaper_ingest http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph',
@@ -26,7 +27,7 @@ function islandora_newspaper_ingest_drush_command() {
 	return $items;
 }
 
-function drush_islandora_newspaper_ingest_islandora_ingest_newspapers($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id) {
+function drush_islandora_newspaper_ingest_islandora_ingest_newspapers($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
 	$core = DRUSH_DRUPAL_CORE;
 	require_once $core . '/includes/bootstrap.inc';
 	require_once $core . '/includes/common.inc';
@@ -61,7 +62,9 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspapers($import_pa
 					ISSUE_ISSUE,
 					ISSUE_EDITION,
 					MISSING_PAGES,
-					ISSUE_LANGUAGE
+					ISSUE_LANGUAGE,
+					$special_identifier,
+					ISSUE_SUPPLEMENT_TITLE
 	);
 
 	$import->ingest();

@@ -2,8 +2,9 @@
 
 class islandoraNewspaperImportIssue {
 
-	function __construct($api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $issueLanguage) {
+	function __construct($api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $issueLanguage, $special_identifier, $issue_supplement_title) {
 		$this->marcOrgID=$marcOrgID;
+		$this->specialIdentifier=$special_identifier;
 		$this->sourceMedia=$sourceMedia;
 		$this->setupNameSpace($api, $nameSpace);
 		$this->setupParentCollection($api, $parentCollectionPID);
@@ -16,6 +17,7 @@ class islandoraNewspaperImportIssue {
 		$this->missingPages=$missingPages;
 		$this->title=$issueTitle;
 		$this->issueLanguage=$issueLanguage;
+		$this->issueSupplementTitle=$issue_supplement_title;
 		$this->sequenceNumber=1;
 		$this->assignPID();
 		$this->pages=array();
@@ -52,6 +54,7 @@ class islandoraNewspaperImportIssue {
 		$issueMODS->assign('sort_title', $titleArray[2]);
 		$issueMODS->assign('iso_date', $this->getISODate());
 		if ( $this->missingPages !='' ) $issueMODS->assign('missing_pages', $this->missingPages);
+		if ( $this->issueSupplementTitle !='' ) $issueMODS->assign('issue_supplement_title', $this->issueSupplementTitle);
 		$this->xml['MODS'] = new DOMDocument();
 		$this->xml['MODS']->loadXML($issueMODS->fetch(join('/', array($this->templatepath, 'issue_mods.tpl.php'))));
 	}
@@ -63,17 +66,30 @@ class islandoraNewspaperImportIssue {
 		$issueRDF->assign('parent_collection_pid', $this->parentCollectionPID);
 		$issueRDF->assign('sequence_number', $this->sequenceNumber);
 		$issueRDF->assign('date_issued', date("Y-m-d",$this->issueDate));
+		if ( $this->specialIdentifier !='' ) {
+			$issueRDF->assign('issue_supplement_parent', $this->namespace.':'.$this->getISODate());
+		} else {
+			$issueRDF->assign('issue_supplement_parent', '');
+		}
 		$this->xml['RDF'] = new DOMDocument();
 		$this->xml['RDF']->loadXML($issueRDF->fetch(join('/', array($this->templatepath, 'issue_rdf.tpl.php'))));
+
 	}
 
 	function assignPID() {
+		$pidArray = array(
+						$this->namespace,
+					);
+
+		if ($this->specialIdentifier != '') {
+			$pidArray[]=$this->getISODate().'-'.$this->specialIdentifier;
+		} else {
+			$pidArray[]=$this->getISODate();
+		}
+
 		$this->pid=join(
 					":",
-					array(
-						$this->namespace,
-						$this->getISODate(),
-					)
+					$pidArray
 				);
 	}
 
