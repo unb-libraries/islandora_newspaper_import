@@ -47,15 +47,6 @@ for root, dirs, files in os.walk(top_import_tree):
             yes_count = yes_count + 1
             dirpath = tempfile.mkdtemp()
 
-            # Is this a special issue?
-            special_identifier = ''
-            cur_dir_array = cur_dir.split('_')
-            print cur_dir_array
-            if len(cur_dir_array) > 4 :
-                special_identifier = '-'.join(cur_dir_array[4:]).lower()
-
-            print "Special Identifier :", special_identifier
-
             # Copy TIF files
             for fname in iglob(os.path.join(root, cur_dir, '*.tif')):
                 copy(fname, os.path.join(dirpath, os.path.basename(fname)))
@@ -87,6 +78,23 @@ for root, dirs, files in os.walk(top_import_tree):
             fo = open(os.path.join(dirpath, 'metadata.php'), "wb")
             fo.write(new_conf_file_data);
             fo.close()
+
+            # Is this a special issue?
+            special_identifier = ''
+            cur_dir_array = cur_dir.split('_')
+            print cur_dir_array
+            if len(cur_dir_array) > 4 :
+                 matches = re.search('ISSUE_SUPPLEMENT_TITLE\', *\'(.{1,25})\'\)\;', new_conf_file_data)
+                 if matches.group(1):
+                     # Crush to lowercase, replace spaces with underscores and strip all non-word characters
+                     # Replacing spaces with underscores THEN back to hyphens is to leverage the ease of 
+                     # \W
+                     special_identifier = re.sub(r'\W+', '', matches.group(1).lower().replace(' ','_')).replace('_','-')
+                 else:
+                     # If the above fails or the user did not enter a string in the conf file, then fallback to the label used
+                     # In the metadata.
+                     special_identifier = '-'.join(cur_dir_array[4:]).lower()
+            print "Special Identifier :", special_identifier
 
             # Ready to import.
             # Run Import command
