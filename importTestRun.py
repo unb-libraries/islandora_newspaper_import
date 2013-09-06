@@ -48,7 +48,7 @@ for root, dirs, files in os.walk(top_import_tree):
             dirpath = tempfile.mkdtemp()
 
             # Copy TIF files
-            for fname in iglob(os.path.join(root, cur_dir, '*.tif')):
+            for fname in iglob(os.path.join(root, cur_dir, '*.jpg')):
                 copy(fname, os.path.join(dirpath, os.path.basename(fname)))
 
             # Read in metadata.inc.php to variable
