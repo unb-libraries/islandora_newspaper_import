@@ -118,7 +118,7 @@ for root, dirs, files in os.walk(top_import_tree):
             print ' '.join(import_command_list)
 
             # Remove temp directory tiffs
-            filelist = [ f for f in os.listdir(dirpath) if f.endswith(".tif") ]
+            filelist = [ f for f in os.listdir(dirpath) if f.endswith(".jpg") ]
             for f in filelist:
                 os.remove(os.path.join(dirpath,f))
                 pass
