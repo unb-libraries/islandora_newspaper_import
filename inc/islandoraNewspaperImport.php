@@ -38,10 +38,10 @@ class islandoraNewspaperImport {
 			$this->import_path=$importPath;
 		}
 		$this->imagesToImport=array();
-		$file_list=glob(join('/',array($this->import_path,'*.[tT][iI][fF]')));
+		$file_list=glob(join('/',array($this->import_path,'*.[jJ][pP][gG]')));
 		foreach ($file_list as $filePathToImport) {
 			$this->imagesToImport[]=array(
-								'pageno' => str_replace('.tif','', array_pop(explode('_', basename($filePathToImport)))),
+								'pageno' => str_replace('.jpg','', array_pop(explode('_', basename($filePathToImport)))),
 								'filepath' => $filePathToImport
 								);
 		}
@@ -68,6 +68,6 @@ class islandoraNewspaperImport {
 
 	function validateSourcePath() {
 		if(!@include(join('/', array($this->import_path,'metadata.php')))) die("Failed to load 'metadata.php' from {$this->import_path}\n");
-		if (sizeof($this->imagesToImport) < 1 ) die("No *.tif files exist in import path {$this->import_path}\n");
+		if (sizeof($this->imagesToImport) < 1 ) die("No *.jpg files exist in import path {$this->import_path}\n");
 	}
 }

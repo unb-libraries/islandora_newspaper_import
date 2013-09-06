@@ -154,15 +154,15 @@ class islandoraNewspaperImportIssue {
 			$pageObjectToIngest = new NewFedoraObject($currentImportPage->pid, $repository);
 			$pageObjectToIngest->label = $currentImportPage->getLabel();
 
-			// TIFF
-			$pageDSTIFF = new NewFedoraDatastream('OBJ', 'M', $issueObjectToIngest, $repository);
-			$pageDSTIFF->setContentFromFile($currentImportPage->image['filepath'], FALSE);
-			$pageDSTIFF->mimetype = 'image/tiff';
-			$pageDSTIFF->label = 'TIFF image';
-			$pageDSTIFF->checksum = TRUE;
-			$pageDSTIFF->checksumType = 'MD5';
-			$pageDSTIFF->logMessage = 'TIFF datastream created using Newspapers batch ingest script || SUCCESS';
-			$pageObjectToIngest->ingestDatastream($pageDSTIFF);
+			// Primary JPG Datastream
+			$pageDSJPG = new NewFedoraDatastream('OBJ', 'M', $issueObjectToIngest, $repository);
+			$pageDSJPG->setContentFromFile($currentImportPage->image['filepath'], FALSE);
+			$pageDSJPG->mimetype = 'image/jpeg';
+			$pageDSJPG->label = 'JPG image';
+			$pageDSJPG->checksum = TRUE;
+			$pageDSJPG->checksumType = 'MD5';
+			$pageDSJPG->logMessage = 'JPG datastream created using Newspapers batch ingest script || SUCCESS';
+			$pageObjectToIngest->ingestDatastream($pageDSJPG);
 
 			// DC
 			$pageDSDC = new NewFedoraDatastream('TIFF', 'X', $issueObjectToIngest, $repository);
