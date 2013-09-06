@@ -165,7 +165,7 @@ class islandoraNewspaperImportIssue {
 			$pageObjectToIngest->ingestDatastream($pageDSJPG);
 
 			// DC
-			$pageDSDC = new NewFedoraDatastream('TIFF', 'X', $issueObjectToIngest, $repository);
+			$pageDSDC = new NewFedoraDatastream('DC', 'X', $issueObjectToIngest, $repository);
 			$pageDSDC->content = $currentImportPage->xml['DC']->saveXML();
 			$pageDSDC->mimetype = 'text/xml';
 			$pageDSDC->label = 'DC Record';
