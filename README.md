@@ -6,9 +6,9 @@ This development was based on a model originally written by Paul Pound at UPEI (
 Some assumptions about the source data are made for the sake of sanity:
 +   All images for an issue must reside in a single path.
 +   That path must contain a file named issue_metadata.inc.php, which provides metadata for that issue based on the sample model given in issue_metadata.inc.php.example.
-+   All images must be in TIF format, and have an extension of TIF.
-+   The names of the images should be the page number of the issue they represent (001.TIF, 002.TIF, etc.)
-+   In the case of missing pages, be sure to omit those pages from the numbering sequence (007.TIF, 008.TIF, 010.TIF). The missing pages should be noted in the MISSING_PAGES variable defined in issue_metadata.inc.php
++   All images must be in JPG format, and have an extension of jpg.
++   The names of the images should be the page number of the issue they represent (001.jpg, 002.jpg, etc.)
++   In the case of missing pages, be sure to omit those pages from the numbering sequence (007.jpg, 008.jpg, 010.jpg). The missing pages should be noted in the MISSING_PAGES variable defined in issue_metadata.inc.php
 
 ## Setup
 Install this script as a drush command.
@@ -17,7 +17,7 @@ Install this script as a drush command.
 For the kakadu based JP2 encoding to correctly function, make sure the LD_LIBRARY_PATH environment variable is set and reflects the location of libkdu_*.so.
 
 The required arguments, in order, are:
-+   import_path : The path to the directory that contains the newspaper pages in TIF format
++   import_path : The path to the directory that contains the newspaper pages in JPG format
 +   parent_pid : The PID of the collection that will contain the issue.
 +   base_namespace : The base namespace to use for the issue
 +   fedora_url : The full url, including port number for the fedora repository
