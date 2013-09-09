@@ -238,6 +238,8 @@ class islandoraNewspaperImportIssue {
 	}
 
 	function getLabel() {
-		return ("Volume {$this->issueVolume}, Number {$this->issueIssue}");
+		$issueLabel = "Volume {$this->issueVolume}, Number {$this->issueIssue}";
+		if ( $this->specialIdentifier !='' ) $issueLabel += ' (' . $this->specialIdentifier . ')';
+		return ($issueLabel);
 	}
 }
