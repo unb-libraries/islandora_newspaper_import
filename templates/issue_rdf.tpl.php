@@ -2,9 +2,7 @@
   <rdf:Description rdf:about="info:fedora/{$issue_pid}">
     <fedora-model:hasModel rdf:resource="info:fedora/{$issue_content_model_pid}"></fedora-model:hasModel>
     <fedora:isMemberOf rdf:resource="info:fedora/{$parent_collection_pid}"></fedora:isMemberOf>
-    {if $issue_supplement_parent != ''}
-    <fedora:isPartOf rdf:resource="info:fedora/{$issue_supplement_parent}"></fedora:isPartOf>
-    {/if}
+    {if $issue_supplement_parent != ''}<fedora:isPartOf rdf:resource="info:fedora/{$issue_supplement_parent}"></fedora:isPartOf>{/if}
     <islandora:isSequenceNumber>{$sequence_number}</islandora:isSequenceNumber>
     <islandora:dateIssued>{$date_issued}</islandora:dateIssued>
   </rdf:Description>

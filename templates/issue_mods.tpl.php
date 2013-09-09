@@ -1,9 +1,7 @@
 <mods xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<titleInfo>
 		<title>Volume {$issue_volume}, Number {$issue_issue} {$issue_edition}</title>
-		{if $issue_supplement_title != ''}
-		<subTitle>{$issue_supplement_title}</subTitle>
-		{/if}
+		{if $issue_supplement_title != ''}<subTitle>{$issue_supplement_title}</subTitle>{/if}
 	</titleInfo>
 	<titleInfo type="alternative">
 		<title/>
