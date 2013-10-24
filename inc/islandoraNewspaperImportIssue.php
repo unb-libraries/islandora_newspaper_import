@@ -91,6 +91,9 @@ class islandoraNewspaperImportIssue {
 					":",
 					$pidArray
 				);
+
+		// Truncate the PID to 60 characters, since '-###' will be added for the page numbers and 64 is the max.
+		$this->pid = substr($this->pid,0,60);
 	}
 
 	function createContent($imagesToImport, $pageContentModelPID) {
