@@ -43,7 +43,7 @@ for root, dirs, files in os.walk(top_import_tree):
             max_issues_to_import = 100
             item_counter = item_counter + 1
             if item_counter > max_issues_to_import:
-                sys.exit(max_issues_to_import + ' Items Imported')
+                sys.exit('Stopping at ' + str(max_issues_to_import) + ' Issues Imported')
 
             yes_count = yes_count + 1
             dirpath = tempfile.mkdtemp()
