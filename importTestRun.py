@@ -33,6 +33,7 @@ item_counter = 0
 # Loop Over Paths
 for root, dirs, files in os.walk(top_import_tree):
 
+    dirs.sort()
     for cur_dir in dirs:
 
         metadata_filename = check_is_paper_dir(os.path.join(root, cur_dir))
