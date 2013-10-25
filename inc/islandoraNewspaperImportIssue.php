@@ -2,10 +2,11 @@
 
 class islandoraNewspaperImportIssue {
 
-	function __construct($api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $issueLanguage, $special_identifier, $issue_supplement_title) {
+	function __construct($api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $issueLanguage, $special_identifier, $issue_supplement_title, $issue_errata) {
 		$this->marcOrgID=$marcOrgID;
 		$this->specialIdentifier=$special_identifier;
 		$this->sourceMedia=$sourceMedia;
+		$this->issueErrata=$issue_errata;
 		$this->setupNameSpace($api, $nameSpace);
 		$this->setupParentCollection($api, $parentCollectionPID);
 		$this->cModel=$issueContentModelPID;
@@ -53,6 +54,7 @@ class islandoraNewspaperImportIssue {
 		$issueMODS->assign('non_sort_title', $titleArray[1]);
 		$issueMODS->assign('sort_title', $titleArray[2]);
 		$issueMODS->assign('iso_date', $this->getISODate());
+		if ( $this->issueErrata !='' ) $issueMODS->assign('issue_errata', $this->issueErrata);
 		if ( $this->missingPages !='' ) $issueMODS->assign('missing_pages', $this->missingPages);
 		if ( $this->issueSupplementTitle !='' ) $issueMODS->assign('issue_supplement_title', $this->issueSupplementTitle);
 		$this->xml['MODS'] = new DOMDocument();

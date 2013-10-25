@@ -75,5 +75,6 @@
 			<frequency authority="marcfrequency"/>
 		</originInfo>
 		<identifier type="issn"/>
-	</relatedItem>
+	</relatedItem>{if $issue_errata != ''}
+	<note>{$issue_errata}</note>{/if}
 </mods>
