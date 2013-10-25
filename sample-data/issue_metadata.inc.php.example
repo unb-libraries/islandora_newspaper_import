@@ -1,14 +1,14 @@
 <?php
 
-define('SOURCE_MEDIA','');
-define('ISSUE_TITLE','');
-define('ISSUE_DATE', mktime(0, 0, 0, 7, 1, 2000));
-define('ISSUE_MEDIA', '');
-define('ISSUE_LCCN', '');
-define('ISSUE_VOLUME', '');
-define('ISSUE_ISSUE', '');
+define('ISSUE_DATE', mktime(0, 0, 0, 1, 2, 1992));
+define('ISSUE_TITLE','Atlantic Business Report');
+define('ISSUE_VOLUME', '1');
+define('ISSUE_ISSUE', '1');
 define('ISSUE_EDITION', '');
+define('ISSUE_SUPPLEMENT_TITLE', '');
 define('MISSING_PAGES', '');
-define('ISSUE_CONTENT_MODEL_PID', '');
-define('PAGE_CONTENT_MODEL_PID', '');
-define('ISSUE_LANGUAGE', '');
+define('ISSUE_ERRATA','Date of issue not printed, only month and year are printed');
+define('ISSUE_CONTENT_MODEL_PID', 'islandora:newspaperIssueCModel');
+define('PAGE_CONTENT_MODEL_PID', 'islandora:newspaperPageCModel');
+define('ISSUE_LANGUAGE', 'eng');
+define('SOURCE_MEDIA','print');
