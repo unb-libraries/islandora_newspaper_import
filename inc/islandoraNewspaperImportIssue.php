@@ -184,7 +184,6 @@ class islandoraNewspaperImportIssue {
 			$pageObjectToIngest->ingestDatastream($pageDSRDF);
 
 			$repository->ingestObject($pageObjectToIngest);
-			islandora_newspaper_islandora_newspaperpagecmodel_islandora_object_ingested($pageObjectToIngest);
 		}
 	}
 
