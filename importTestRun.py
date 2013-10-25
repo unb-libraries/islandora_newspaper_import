@@ -53,6 +53,7 @@ for root, dirs, files in os.walk(top_import_tree):
                 copy(fname, os.path.join(dirpath, os.path.basename(fname)))
 
             # Read in metadata.inc.php to variable
+            print os.path.join(root, cur_dir, metadata_filename)
             with open (os.path.join(root, cur_dir, metadata_filename), "r") as myfile:
                 conf_file_data=myfile.read()
 
