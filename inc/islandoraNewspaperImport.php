@@ -61,7 +61,7 @@ class islandoraNewspaperImport {
 
 		// Generate MODS
 		$this->xml['MODS'] = new DOMDocument();
-		$this->xml['MODS']->loadXML(file_get_contents(join('/', array($this->import_path,'MODS.xml'))));
+		$this->xml['MODS']->loadXML(file_get_contents(join('/', array($this->importPath,'MODS.xml'))));
 
 		// Generate DC
 		$transformXSL = new DOMDocument();
