@@ -71,5 +71,5 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($impo
 	bootstrapDrupal();
 	$import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
 	$import->buildIssue($marcorg_id, $parent_pid, $base_namespace, $special_identifier);
-	$import->ingest();
+	$import->ingestIssue();
 }

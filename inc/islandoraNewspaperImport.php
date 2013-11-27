@@ -28,7 +28,7 @@ class islandoraNewspaperImport {
 		$this->issue->createContent($this->imagesToImport, PAGE_CONTENT_MODEL_PID, $templatePath, $xslPath);
 	}
 
-	function ingest() {
+	function ingestIssue() {
 		$this->issue->ingest($this->repository);
 	}
 
