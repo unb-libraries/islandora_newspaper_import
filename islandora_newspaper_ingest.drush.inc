@@ -4,6 +4,22 @@ require_once('inc/islandoraNewspaperImportIssue.php');
 require_once('inc/islandoraNewspaperImportPage.php');
 require_once('lib/smarty/distribution/libs/Smarty.class.php');
 
+function bootstrapDrupal() {
+	$drupal_core_path = DRUSH_DRUPAL_CORE;
+	require_once $drupal_core_path . '/includes/bootstrap.inc';
+	require_once $drupal_core_path . '/includes/common.inc';
+	include_once $drupal_core_path . '/includes/unicode.inc';
+
+	drupal_bootstrap(DRUPAL_BOOTSTRAP_SESSION);
+	require_once $drupal_core_path . '/includes/install.inc';
+	require_once $drupal_core_path . '/modules/system/system.install';
+
+	include_once $drupal_core_path . '/includes/module.inc';
+	drupal_load('module', 'islandora');
+	drupal_load('module', 'islandora_newspaper');
+	include_once('/srv/www/VRE7/sites/newspapers.lib.unb.ca/modules/islandora/includes/tuque.inc');
+}
+
 function islandora_newspaper_ingest_drush_command() {
 	$items = array();
 	$items['islandora_ingest_newspaper_issue'] = array(
@@ -28,19 +44,7 @@ function islandora_newspaper_ingest_drush_command() {
 }
 
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
-	$core = DRUSH_DRUPAL_CORE;
-	require_once $core . '/includes/bootstrap.inc';
-	require_once $core . '/includes/common.inc';
-	include_once $core . '/includes/unicode.inc';
-
-	drupal_bootstrap(DRUPAL_BOOTSTRAP_SESSION);
-	require_once $core . '/includes/install.inc';
-	require_once $core . '/modules/system/system.install';
-
-	include_once $core . '/includes/module.inc';
-	drupal_load('module', 'islandora');
-	drupal_load('module', 'islandora_newspaper');
-
+	bootstrapDrupal();
 	$import = new islandoraNewspaperImport(
 											$fedora_url,
 											$fedora_user,
@@ -53,7 +57,7 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($impo
 					$parent_pid,
 					$base_namespace,
 					$special_identifier
-                );
+				);
 
 	$import->ingest();
 }
