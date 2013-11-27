@@ -36,8 +36,6 @@ class islandoraNewspaperImport {
 	function buildIssue($marcOrgID, $parentCollectionPID, $nameSpace, $special_identifier) {
 		$this->setupIssueSourceData();
 		$this->validateIssueConfigData();
-		$this->assignTemplatePath();
-		$this->assignXSLPath();
 		$this->issue=new islandoraNewspaperImportIssue($this->api, SOURCE_MEDIA, $marcOrgID, ISSUE_CONTENT_MODEL_PID, $nameSpace, $parentCollectionPID, ISSUE_TITLE, ISSUE_LCCN, ISSUE_DATE, ISSUE_VOLUME, ISSUE_ISSUE, ISSUE_EDITION, MISSING_PAGES, ISSUE_LANGUAGE, $special_identifier, ISSUE_SUPPLEMENT_TITLE, ISSUE_ERRATA);
 		$this->issue->createContent($this->imagesToImport, PAGE_CONTENT_MODEL_PID, $templatePath, $xslPath);
 	}
@@ -50,6 +48,8 @@ class islandoraNewspaperImport {
 		$this->collectionPID = $collection_pid;
 		$this->titlePID = $title_pid;
 		$this->titleTitle = $title_string;
+		$this->assignTemplatePath();
+		$this->assignXSLPath();
 
 		// Generate RDF
 		$titleRDF= new Smarty;
