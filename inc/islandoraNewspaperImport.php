@@ -4,8 +4,7 @@ class islandoraNewspaperImport {
 
 	function __construct($repoURL,$repoUser,$repoPass,$importPath) {
 		$this->fedoraInit($repoURL,$repoUser,$repoPass);
-		$this->setupSourceData($importPath);
-		$this->validateConfigData();
+		$this->importPath=$importPath;
 	}
 
 	function fedoraInit($repoURL,$repoUser,$repoPass) {
@@ -23,6 +22,8 @@ class islandoraNewspaperImport {
 	}
 
 	function buildIssue($sourceMedia, $marcOrgID, $issueContentModelPID, $pageContentModelPID, $parentCollectionPID, $nameSpace, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $issueLanguage, $special_identifier, $issue_supplement_title, $issue_errata) {
+		$this->setupIssueSourceData();
+		$this->validateIssueConfigData();
 		$this->issue=new islandoraNewspaperImportIssue($this->api, $sourceMedia, $marcOrgID, $issueContentModelPID, $nameSpace, $parentCollectionPID, $issueTitle, $lccnID, $issueDate, $issueVolume, $issueIssue, $issueEdition, $missingPages, $issueLanguage, $special_identifier, $issue_supplement_title, $issue_errata);
 		$this->issue->createContent($this->imagesToImport, $pageContentModelPID, $templatePath, $xslPath);
 	}
@@ -31,7 +32,8 @@ class islandoraNewspaperImport {
 		$this->issue->ingest($this->repository);
 	}
 
-	function setupSourceData($importPath) {
+	function setupIssueSourceData() {
+		$importPath = $this->importPath;
 		if (!$importPath) {
 			$this->import_path=drush_prompt(dt('Path to Import Directory'), NULL, TRUE);
 		} else {
@@ -48,7 +50,7 @@ class islandoraNewspaperImport {
 		$this->validateSourcePath();
 	}
 
-	function validateConfigData() {
+	function validateIssueConfigData() {
 		$this->validateIssueDate();
 		$must_exist_data=array(
 				'ISSUE_TITLE',
