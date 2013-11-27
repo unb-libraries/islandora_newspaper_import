@@ -49,24 +49,11 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($impo
 											);
 
 	$import->buildIssue(
-					SOURCE_MEDIA,
 					$marcorg_id,
-					ISSUE_CONTENT_MODEL_PID,
-					PAGE_CONTENT_MODEL_PID,
 					$parent_pid,
 					$base_namespace,
-					ISSUE_TITLE,
-					ISSUE_LCCN,
-					ISSUE_DATE,
-					ISSUE_VOLUME,
-					ISSUE_ISSUE,
-					ISSUE_EDITION,
-					MISSING_PAGES,
-					ISSUE_LANGUAGE,
-					$special_identifier,
-					ISSUE_SUPPLEMENT_TITLE,
-					ISSUE_ERRATA
-	);
+					$special_identifier
+                );
 
 	$import->ingest();
 }
