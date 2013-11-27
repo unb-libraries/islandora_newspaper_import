@@ -20,6 +20,7 @@ class islandoraNewspaperImport {
 	}
 
 	function fedoraInit($repoURL,$repoUser,$repoPass) {
+		print "$repoURL,$repoUser,$repoPass";
 		$this->connection = new RepositoryConnection($repoURL,$repoUser,$repoPass);
 		$this->api = new FedoraApi($this->connection);
 		$cache = new SimpleCache();

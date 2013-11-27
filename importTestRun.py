@@ -24,11 +24,42 @@ def check_is_paper_dir(cur_path):
     if os.path.isfile(os.path.join(cur_path, 'metadata.php.txt')) : return 'metadata.php.txt'
     return False
 
-top_import_tree = '/mnt/etcimages/NDP_Test_CNN'
+
+### Variables that change
+do_title_ingest = True
+parent_collection_pid = 'islandora:newspaper_collection'
+top_import_tree = '/mnt/newspaperimport/Colonial Times'
+title_label_to_use = 'Colonial Times'
+title_id_string = 'colonialtimes'
+##
+title_pid = 'newspapers:' + title_id_string
+issue_top_namespace = title_id_string
+### End Variables that change.
 
 yes_count = 0
 no_count = 0
 item_counter = 0
+
+if do_title_ingest:
+    # Import Title
+    import_title_command_list = [
+                      'drush',
+                      '-u', '1',
+                      '--root=/srv/www/VRE7',
+                      '--uri=http://newspapers.lib.unb.ca',
+                      'islandora_ingest_newspaper_title',
+                      top_import_tree,
+                      parent_collection_pid,
+                      title_pid,
+                      title_label_to_use,
+                      'http://fedora.lib.unb.ca:8080/fedora',
+                      'fedoraAdmin',
+                      'fedoraAdmin'
+       ]
+    print ' '.join(import_title_command_list)
+    q = subprocess.Popen(import_title_command_list, stdout = subprocess.PIPE)
+    q.wait()
+
 
 # Loop Over Paths
 for root, dirs, files in os.walk(top_import_tree):
@@ -40,7 +71,7 @@ for root, dirs, files in os.walk(top_import_tree):
         if metadata_filename:
 
             # Restrict to X issues.
-            max_issues_to_import = 100
+            max_issues_to_import = 25
             item_counter = item_counter + 1
             if item_counter > max_issues_to_import:
                 sys.exit('Stopping at ' + str(max_issues_to_import) + ' Issues Imported')
@@ -108,19 +139,19 @@ for root, dirs, files in os.walk(top_import_tree):
                                   '--uri=http://newspapers.lib.unb.ca',
                                   'islandora_ingest_newspaper_issue',
                                   dirpath,
-                                  'islandora:1',
-                                  'carletonnorthnews',
+                                  title_pid,
+                                  issue_top_namespace,
                                   'http://fedora.lib.unb.ca:8080/fedora',
                                   'fedoraAdmin',
                                   '**PASSWORD**',
                                   'NBFU',
                                   special_identifier
                    ]
+            print ' '.join(import_command_list)
             q = subprocess.Popen(import_command_list, stdout = subprocess.PIPE)
             q.wait()
-            print ' '.join(import_command_list)
 
-            # Remove temp directory tiffs
+            # Remove temp directory images
             filelist = [ f for f in os.listdir(dirpath) if f.endswith(".jpg") ]
             for f in filelist:
                 os.remove(os.path.join(dirpath,f))
