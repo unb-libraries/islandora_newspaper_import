@@ -27,7 +27,7 @@ function islandora_newspaper_ingest_drush_command() {
 	return $items;
 }
 
-function drush_islandora_newspaper_ingest_islandora_ingest_newspapers($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
+function drush_islandora_newspaper_ingest_islandora_ingest_issue($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
 	$core = DRUSH_DRUPAL_CORE;
 	require_once $core . '/includes/bootstrap.inc';
 	require_once $core . '/includes/common.inc';
