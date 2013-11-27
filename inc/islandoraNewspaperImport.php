@@ -32,6 +32,65 @@ class islandoraNewspaperImport {
 		$this->issue->ingest($this->repository);
 	}
 
+	function buildTitle($title_string, $collection_pid, $title_pid) {
+		$this->collectionPID = $collection_pid;
+		$this->titlePID = $title_pid;
+		$this->titleTitle = $title_string;
+
+		// Generate RDF
+		$titleRDF= new Smarty;
+		$titleRDF->assign('title_pid', $this->titlePID);
+		$titleRDF->assign('collection_pid', $this->collectionPID);
+		$this->xml['RDF'] = new DOMDocument();
+		$this->xml['RDF']->loadXML($titleRDF->fetch(join('/', array($this->templatepath, 'title_rdf.tpl.php'))));
+
+		// Generate MODS
+		$this->xml['MODS'] = new DOMDocument();
+		$this->xml['MODS']->loadXML(file_get_contents(join('/', array($this->import_path,'MODS.xml'))));
+
+		// Generate DC
+		$transformXSL = new DOMDocument();
+		$transformXSL->load(join('/', array($this->xslpath, 'mods_to_dc.xsl')));
+		$processor = new XSLTProcessor();
+		$processor->importStylesheet($transformXSL);
+		$this->xml['DC'] = new DOMDocument();
+		$this->xml['DC']->loadXML($processor->transformToXML($this->xml['MODS']));
+	}
+
+	function ingestTitle() {
+		$titleObjectToIngest = new NewFedoraObject($this->titlePID, $this->repository);
+		$titleObjectToIngest->label = $this->titleTitle;
+
+		// Add RDF
+		$titleDSRDF = new NewFedoraDatastream('RELS-EXT', 'X', $titleObjectToIngest, $this->repository);
+		$titleDSRDF->content = $this->xml['RDF']->saveXML();
+		$titleDSRDF->mimetype = 'application/rdf+xml';
+		$titleDSRDF->label = 'Fedora Object to Object Relationship Metadata.';
+		$titleDSRDF->logMessage = 'RELS-EXT datastream created using Newspapers batch ingest script || SUCCESS';
+		$titleObjectToIngest->ingestDatastream($titleDSRDF);
+
+		// Add MODS
+		$titleDSMODS = new NewFedoraDatastream('MODS', 'M', $titleObjectToIngest, $this->repository);
+		$titleDSMODS->content = $this->xml['MODS']->saveXML();
+		$titleDSMODS->mimetype = 'text/xml';
+		$titleDSMODS->label = 'MODS Record';
+		$titleDSMODS->checksum = TRUE;
+		$titleDSMODS->checksumType = 'MD5';
+		$titleDSMODS->logMessage = 'Title MODS datastream created using Newspapers batch ingest script || SUCCESS';
+		$titleObjectToIngest->ingestDatastream($titleDSMODS);
+
+		// Add DC
+		$titleDSDC = new NewFedoraDatastream('DC', 'X', $titleObjectToIngest, $this->repository);
+		$titleDSDC->content = $this->xml['DC']->saveXML();
+		$titleDSDC->mimetype = 'text/xml';
+		$titleDSDC->label = 'DC Record';
+		$titleDSDC->logMessage = 'DC datastream created using Newspapers batch ingest script || SUCCESS';
+		$titleObjectToIngest->ingestDatastream($titleDSDC);
+
+		$this->repository->ingestObject($titleObjectToIngest);
+		// TODO: Islandora newspapercmodel hook to fire?
+	}
+
 	function setupIssueSourceData() {
 		$importPath = $this->importPath;
 		if (!$importPath) {
