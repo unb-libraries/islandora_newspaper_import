@@ -46,6 +46,7 @@ function islandora_newspaper_ingest_drush_command() {
 			'import_path' => 'The path to the directory that contains the newspaper metadata (MODS.xml)',
 			'parent_pid' => 'The PID of the collection that will contain the title.',
 			'base_namespace' => 'The base namespace to use for the issue',
+			'title_string' => 'A text title to be used for the title\s title',
 			'fedora_url' => 'The full url, including port number to the fedora repository',
 			'fedora_user' => 'A user with full write access to the fedora repository',
 			'fedora_password' => 'Password for the fedora user',
@@ -57,6 +58,13 @@ function islandora_newspaper_ingest_drush_command() {
 		'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
 	);
 	return $items;
+}
+
+function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($import_path, $parent_pid, $base_namespace, $title_string, $fedora_url, $fedora_user, $fedora_password) {
+	bootstrapDrupal();
+	$import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
+	$import->buildTitle($title_string, $parent_pid, $base_namespace);
+	$import->ingestTitle();
 }
 
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
