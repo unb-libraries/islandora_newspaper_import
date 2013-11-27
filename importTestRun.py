@@ -106,7 +106,7 @@ for root, dirs, files in os.walk(top_import_tree):
                                   '-u', '1',
                                   '--root=/srv/www/VRE7',
                                   '--uri=http://newspapers.lib.unb.ca',
-                                  'islandora_ingest_newspapers',
+                                  'islandora_ingest_newspaper_issue',
                                   dirpath,
                                   'islandora:1',
                                   'carletonnorthnews',
