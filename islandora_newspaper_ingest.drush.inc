@@ -35,9 +35,9 @@ function islandora_newspaper_ingest_drush_command() {
 			'special_identifier' => 'A special identifier used for identifying supplements, etc.',
 		),
 		'examples' => array(
-			'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_newspaper_ingest http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph',
+			'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_newspaper_ingest /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password tv-guide',
 		),
-		'aliases' => array('ingestpaper'),
+		'aliases' => array('ingestissue'),
 		'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
 	);
 	$items['islandora_ingest_newspaper_title'] = array(
