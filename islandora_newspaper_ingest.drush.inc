@@ -40,6 +40,22 @@ function islandora_newspaper_ingest_drush_command() {
 		'aliases' => array('ingestpaper'),
 		'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
 	);
+	$items['islandora_ingest_newspaper_title'] = array(
+		'description' => "Creates a newspaper title object.",
+		'arguments' => array(
+			'import_path' => 'The path to the directory that contains the newspaper metadata (MODS.xml)',
+			'parent_pid' => 'The PID of the collection that will contain the title.',
+			'base_namespace' => 'The base namespace to use for the issue',
+			'fedora_url' => 'The full url, including port number to the fedora repository',
+			'fedora_user' => 'A user with full write access to the fedora repository',
+			'fedora_password' => 'Password for the fedora user',
+		),
+		'examples' => array(
+			'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_ingest_newspaper_title /mnt/images/TJ/ islandora:newspapers newspapers:telegraphjournal http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password',
+		),
+		'aliases' => array('ingesttitle'),
+		'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+	);
 	return $items;
 }
 
