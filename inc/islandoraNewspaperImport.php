@@ -7,6 +7,18 @@ class islandoraNewspaperImport {
 		$this->importPath=$importPath;
 	}
 
+	function assignTemplatePath() {
+		$reflector = new ReflectionClass(get_class($this));
+		$fn = $reflector->getFileName();
+		$this->templatepath=dirname($fn). '/../templates';
+	}
+
+	function assignXSLPath() {
+		$reflector = new ReflectionClass(get_class($this));
+		$fn = $reflector->getFileName();
+		$this->XSLpath=dirname($fn). '/../xsl';
+	}
+
 	function fedoraInit($repoURL,$repoUser,$repoPass) {
 		$this->connection = new RepositoryConnection($repoURL,$repoUser,$repoPass);
 		$this->api = new FedoraApi($this->connection);
@@ -24,6 +36,8 @@ class islandoraNewspaperImport {
 	function buildIssue($marcOrgID, $parentCollectionPID, $nameSpace, $special_identifier) {
 		$this->setupIssueSourceData();
 		$this->validateIssueConfigData();
+		$this->assignTemplatePath();
+		$this->assignXSLPath();
 		$this->issue=new islandoraNewspaperImportIssue($this->api, SOURCE_MEDIA, $marcOrgID, ISSUE_CONTENT_MODEL_PID, $nameSpace, $parentCollectionPID, ISSUE_TITLE, ISSUE_LCCN, ISSUE_DATE, ISSUE_VOLUME, ISSUE_ISSUE, ISSUE_EDITION, MISSING_PAGES, ISSUE_LANGUAGE, $special_identifier, ISSUE_SUPPLEMENT_TITLE, ISSUE_ERRATA);
 		$this->issue->createContent($this->imagesToImport, PAGE_CONTENT_MODEL_PID, $templatePath, $xslPath);
 	}
@@ -50,7 +64,7 @@ class islandoraNewspaperImport {
 
 		// Generate DC
 		$transformXSL = new DOMDocument();
-		$transformXSL->load(join('/', array($this->xslpath, 'mods_to_dc.xsl')));
+		$transformXSL->load(join('/', array($this->XSLpath, 'mods_to_dc.xsl')));
 		$processor = new XSLTProcessor();
 		$processor->importStylesheet($transformXSL);
 		$this->xml['DC'] = new DOMDocument();
