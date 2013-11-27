@@ -45,19 +45,7 @@ function islandora_newspaper_ingest_drush_command() {
 
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
 	bootstrapDrupal();
-	$import = new islandoraNewspaperImport(
-											$fedora_url,
-											$fedora_user,
-											$fedora_password,
-											$import_path
-											);
-
-	$import->buildIssue(
-					$marcorg_id,
-					$parent_pid,
-					$base_namespace,
-					$special_identifier
-				);
-
+	$import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
+	$import->buildIssue($marcorg_id, $parent_pid, $base_namespace, $special_identifier);
 	$import->ingest();
 }
