@@ -76,5 +76,5 @@
 		</originInfo>
 		<identifier type="issn"/>
 	</relatedItem>{if $issue_errata != ''}
-	<note>{$issue_errata}</note>{/if}
+	<note type="errata">{$issue_errata}</note>{/if}
 </mods>
