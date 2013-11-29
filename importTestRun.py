@@ -17,6 +17,7 @@ import re
 import os
 import sys
 import tempfile
+import time
 import subprocess
 
 def check_is_paper_dir(cur_path):
@@ -28,12 +29,13 @@ def check_is_paper_dir(cur_path):
 ### Variables that change
 do_title_ingest = True
 parent_collection_pid = 'islandora:newspaper_collection'
-top_import_tree = '/mnt/newspaperimport/Colonial Times'
-title_label_to_use = 'Colonial Times'
-title_id_string = 'colonialtimes'
+top_import_tree = '/mnt/newspaperimport/Evening_Times'
+title_label_to_use = 'The St. John Evening Times'
+title_id_string = 'stjohneveningtimes'
 ##
 title_pid = 'newspapers:' + title_id_string
 issue_top_namespace = title_id_string
+seconds_pause_between_issues = 30
 ### End Variables that change.
 
 yes_count = 0
@@ -143,13 +145,15 @@ for root, dirs, files in os.walk(top_import_tree):
                                   issue_top_namespace,
                                   'http://fedora.lib.unb.ca:8080/fedora',
                                   'fedoraAdmin',
-                                  '**PASSWORD**',
+                                  'fedoraAdmin',
                                   'NBFU',
                                   special_identifier
                    ]
             print ' '.join(import_command_list)
             q = subprocess.Popen(import_command_list, stdout = subprocess.PIPE)
             q.wait()
+            print "Sleeping to let services catch up"
+            time.sleep(seconds_pause_between_issues)
 
             # Remove temp directory images
             filelist = [ f for f in os.listdir(dirpath) if f.endswith(".jpg") ]
