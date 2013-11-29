@@ -100,6 +100,9 @@ for root, dirs, files in os.walk(top_import_tree):
                 m = re.search('mktime\((.*)\)\)', conf_file_data)
                 old_date_sequence_string = m.group(1)
 
+                # Correct erroneous quote escaping.
+                conf_file_data = conf_file_data.replace("/'", "\\'")
+
                 date_sequence_list = old_date_sequence_string.split(',')
                 month_value = date_sequence_list[4]
                 date_sequence_list[4] = date_sequence_list[3]
