@@ -100,7 +100,7 @@ and \$ds1 <fedora-view:disseminationType> <info:fedora/*/$cur_datastream_label> 
 EOT;
 		// TODO : Printing here is weak, but allows us to pipe input into another tool. Something else instead
 		foreach( $repo_query->query($find_missing_ds_itql, 'itql') as $cur_result) {
-			print $cur_result['object']['value']."\n";
+			print "{$cur_result['object']['value']},$cur_datastream_label\n";
 		}
 	}
 }
