@@ -66,6 +66,16 @@ function islandora_newspaper_ingest_drush_command() {
 			'fedora_password' => 'Password for the fedora user',
 		),
 	);
+	$items['islandora_purge_newspaper_page_datastreams'] = array(
+		'description' => "Purge defined datastreams from a list or ALL newspaper page objects.",
+		'arguments' => array(
+			'pid_values' => 'Comma separted list of PIDs to purge from. \'ALL\' purges from all active newspaper pages',
+			'datastream_labels' => 'Comma separted list of datastream label(s) to purge',
+			'fedora_url' => 'The full url, including port number to the fedora repository',
+			'fedora_user' => 'A user with full write access to the fedora repository',
+			'fedora_password' => 'Password for the fedora user',
+		),
+	);
 	return $items;
 }
 
@@ -101,6 +111,38 @@ EOT;
 		// TODO : Printing here is weak, but allows us to pipe input into another tool. Something else instead
 		foreach( $repo_query->query($find_missing_ds_itql, 'itql') as $cur_result) {
 			print "{$cur_result['object']['value']},$cur_datastream_label\n";
+		}
+	}
+}
+
+function drush_islandora_newspaper_ingest_islandora_purge_newspaper_page_datastreams($pid_values, $datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
+	bootstrapDrupal();
+	$repo_connection = new RepositoryConnection($fedora_url,$fedora_user,$fedora_password);
+	$api_connection = new FedoraApi($repo_connection);
+	$pids_to_purge=array();
+
+	if ($pid_values == 'ALL') {
+		$repo_query = new RepositoryQuery($repo_connection);
+		$find_missing_ds_itql=<<<EOT
+select \$object from <#ri>
+where
+(\$object <fedora-model:hasModel> <info:fedora/islandora:newspaperPageCModel>
+and \$object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
+)
+EOT;
+		foreach($repo_query->query($find_missing_ds_itql, 'itql') as $cur_result) {
+			$pids_to_purge[] = $cur_result['object']['value'];
+		}
+	} else {
+		foreach (explode(',',$pid_values) as $cur_pid) {
+			$pids_to_purge[] = $cur_pid;
+		}
+	}
+
+	// We have PIDs, now start purging
+	foreach($pids_to_purge as $cur_purge_pid) {
+		foreach (explode(',',$datastream_labels) as $cur_datastream_label) {
+			$api_connection->m->purgeDatastream($cur_purge_pid, $cur_datastream_label);
 		}
 	}
 }
