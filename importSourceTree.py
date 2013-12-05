@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""importTestRun.py
+"""importSourceTree.py
 
 Extremely custom islandora newspaper import script.
 
