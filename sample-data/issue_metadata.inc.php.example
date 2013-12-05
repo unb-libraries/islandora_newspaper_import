@@ -1,4 +1,12 @@
 <?php
+/*
+JS, December 2013 : There was an erroneous spec initially developed that
+specified the ISSUE_DATE line in issue_metadata.inc.php should be formatted
+DD, MM, YYYY. The PHP date() function requires input of MM, DD, YYYY. a fix
+was developed for this in importSourceTree.py and users should continue to
+incorrectly specify the date until the backlog has been ingested. At that
+point, the fix can be removed from importSourceTree.py.
+*/
 
 define('ISSUE_DATE', mktime(0, 0, 0, 1, 2, 1992));
 define('ISSUE_TITLE','Atlantic Business Report');
