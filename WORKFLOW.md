@@ -21,16 +21,16 @@ All new **titles** (including corporate entity or name changes) should exist wit
 +    A main **title** Folder containing: 
     +    a single _MODS.xml_ file describing the **title**
     +    A subtree containing multiple folders, each with images from a single **issue**. Each **issue** folder must contain:
-        +    a single _issue_metadata.inc.php_ file, which asserts metadata for that **issue**. An example _issue_metadata.inc.php_ [is available here](https://github.com/unb-libraries/islandora_newspaper_import/blob/7.x/sample-data/issue_metadata.inc.php.example) [^issue-metadata-date]
+        +    a single _metadata.php_ file, which asserts metadata for that **issue**. An example _metadata.php_ [is available here](https://github.com/unb-libraries/islandora_newspaper_import/blob/7.x/sample-data/metadata.php.example) [^issue-metadata-date]
         +    Images representing **pages** for that **issue**, one image per **page**.
             +    Images must be in JPG format[^fn-islandora-tiff]
             +    The filename of the images must be suffixed by an underscore followed by the **page** number of the **issue** they represent (XXXXX_001.jpg for page 1, XXXXX_002.jpg for page 2, etc.).
-            +    In the case of **pages** from the physical item itself, be sure to omit those **pages** from the file naming numbering sequence (XXXXX_007.jpg, XXXXX_008.jpg, XXXXX_010.jpg). The missing **pages** should be noted in the _MISSING_PAGES_ free-text constant defined in _issue_metadata.inc.php_.
+            +    In the case of **pages** from the physical item itself, be sure to omit those **pages** from the file naming numbering sequence (XXXXX_007.jpg, XXXXX_008.jpg, XXXXX_010.jpg). The missing **pages** should be noted in the _MISSING_PAGES_ free-text constant defined in _metadata.php_.
  
             
 Additional Metadata Considerations
 -------
-+    After some discussion, a decision was made that some errors printed in the physical **issues** (Incorrectly printed volume, date, etc.) should be corrected in the _issue_metadata.inc.php_ file. Notes to this effect must be made in the _ISSUE_ERRATA_ constant of the _issue_metadata.inc.php_.
++    After some discussion, a decision was made that some errors printed in the physical **issues** (Incorrectly printed volume, date, etc.) should be corrected in the _metadata.php_ file. Notes to this effect must be made in the _ISSUE_ERRATA_ constant of the _metadata.php_.
 
 
 Choosing a PID/Namespace
@@ -61,10 +61,10 @@ You can then ingest the content into Fedora / Islandora via our drush extension 
 +   If specified, import the metadata from a _MODS.xml_ file in the import root to create the **title** object in Fedora of type _newspaperCModel_.
 +   Using a passed **title** PID (or one generated in the previous step), begin importing issues from the import tree. There are several important points:
     + All images for an issue must reside in a single directory/branch of the tree.
-    + Each issue directory must contain a file named _issue_metadata.inc.php_, which provides metadata for that issue based on the sample model given in issue_metadata.inc.php.example.
+    + Each issue directory must contain a file named _metadata.php_, which provides metadata for that issue based on the sample model given in metadata.php.example.
     + All images must be in that directory JPG format, and have an extension of JPG[^fn-islandora-tiff]. 
     + The base name of the images must be suffixed by an underscore and the page number of the issue they represent (XXXXX_001.jpg for page 1, XXXXX_002.jpg for page 2, etc.)
-    + In the case of **pages** from the physical item itself, be sure to omit those **pages** from the file naming numbering sequence (XXXXX_007.jpg, XXXXX_008.jpg, XXXXX_010.jpg). The missing **pages** should be noted in the _MISSING_PAGES_ free-text variable defined in _issue_metadata.inc.php_.
+    + In the case of **pages** from the physical item itself, be sure to omit those **pages** from the file naming numbering sequence (XXXXX_007.jpg, XXXXX_008.jpg, XXXXX_010.jpg). The missing **pages** should be noted in the _MISSING_PAGES_ free-text variable defined in _metadata.php_.
     + Ensure that all checkboxes are unchecked in the "CREATE PAGE DERIVATIVES LOCALLY" section in the Islandora setup (_admin/islandora/newspaper_). Islandora should not generate any of the derivaties, since microservices will generate these.
 
 Note that a helper script _importSourceTree.py_ is included in the [islandora_newspaper_import](https://github.com/unb-libraries/islandora_newspaper_import) drush command repo. It..  
@@ -100,4 +100,4 @@ The ingest process is not failsafe and requires post-ingest QA. The ([https://gi
 
 [^fn-islandora-tiff]: This is contrary to the default _TIFF_ requirement for primary objects of pages in the [islandora_solution_pack_newspaper](https://github.com/Islandora/islandora_solution_pack_newspaper), which requires _TIFF_ files as the primary object for a newspaper page. Due to disk space concerns on the Fedora server, we have a [fork](https://github.com/unb-libraries/islandora_solution_pack_newspaper) of this repository which, with the understanding that [microservices will pre-convert the object to TIFF before performing OCR](https://github.com/unb-libraries/islandora-newspaper-microservices/blob/master/lib/OCRSurrogate.py#L20-L32), allows _JPG_ and has changed the labels accordingly.
 [^fedora-stomp-listener]: The STOMP listener connects to the Fedora server on port _61613_ and listens for ingest notices. When those of a matching content type (_newspaperPageCModel_) are recieved, it [forwards a JSON-encoded message](https://github.com/unb-libraries/unb_libraries_newspapers/blob/master/unb_libraries_newspapers/__init__.py#L28-L34) to the SQS queue specified in the plugin _unb_libraries_newspapers.cfg_ file. Again, you should ensure that the firewall on the Fedora server has allowed traffic on port _61613_ from the server you are running the listener on.
-[^issue-metadata-date]: There was an erroneous spec initially developed that specified the ISSUE_DATE line in _issue_metadata.inc.php_ should be formatted DD, MM, YYYY. The PHP date() function requires input of MM, DD, YYYY. [a fix was developed for this in _importSourceTree.py_](https://github.com/unb-libraries/islandora_newspaper_import/blob/7.x/importSourceTree.py#L99-L101) and users should continue to incorrectly specify the date until the backlog has been ingested. At that point, the fix can be removed from _importSourceTree.py_.
+[^issue-metadata-date]: There was an erroneous spec initially developed that specified the ISSUE_DATE line in _metadata.php_ should be formatted DD, MM, YYYY. The PHP date() function requires input of MM, DD, YYYY. [a fix was developed for this in _importSourceTree.py_](https://github.com/unb-libraries/islandora_newspaper_import/blob/7.x/importSourceTree.py#L99-L101) and users should continue to incorrectly specify the date until the backlog has been ingested. At that point, the fix can be removed from _importSourceTree.py_.
