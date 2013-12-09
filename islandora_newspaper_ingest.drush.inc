@@ -11,7 +11,7 @@ require_once 'inc/islandoraNewspaperImportPage.php';
 require_once 'inc/islandoraNewspaperImportQueue.php';
 require_once 'lib/smarty/distribution/libs/Smarty.class.php';
 
-function bootstrapDrupal() {
+function _islandora_newspaper_ingest_bootstrap_drupal() {
 	$drupal_core_path = DRUSH_DRUPAL_CORE;
 	require_once $drupal_core_path . '/includes/bootstrap.inc';
 	require_once $drupal_core_path . '/includes/common.inc';
@@ -87,21 +87,21 @@ function islandora_newspaper_ingest_drush_command() {
 }
 
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($import_path, $parent_pid, $base_namespace, $title_string, $fedora_url, $fedora_user, $fedora_password) {
-	bootstrapDrupal();
+	_islandora_newspaper_ingest_bootstrap_drupal();
 	$import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
 	$import->buildTitle($title_string, $parent_pid, $base_namespace);
 	$import->ingestTitle();
 }
 
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
-	bootstrapDrupal();
+	_islandora_newspaper_ingest_bootstrap_drupal();
 	$import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
 	$import->buildIssue($marcorg_id, $parent_pid, $base_namespace, $special_identifier);
 	$import->ingestIssue();
 }
 
 function drush_islandora_newspaper_ingest_islandora_audit_newspaper_pages($datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
-	bootstrapDrupal();
+	_islandora_newspaper_ingest_bootstrap_drupal();
 	$repo_connection = new RepositoryConnection($fedora_url,$fedora_user,$fedora_password);
 	$repo_query = new RepositoryQuery($repo_connection);
 
@@ -123,7 +123,7 @@ EOT;
 }
 
 function drush_islandora_newspaper_ingest_islandora_purge_newspaper_page_datastreams($pid_values, $datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
-	bootstrapDrupal();
+	_islandora_newspaper_ingest_bootstrap_drupal();
 	$repo_connection = new RepositoryConnection($fedora_url,$fedora_user,$fedora_password);
 	$api_connection = new FedoraApi($repo_connection);
 	$pids_to_purge=array();
