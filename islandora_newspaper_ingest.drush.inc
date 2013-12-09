@@ -1,8 +1,9 @@
 <?php
-require_once('inc/islandoraNewspaperImport.php');
-require_once('inc/islandoraNewspaperImportIssue.php');
-require_once('inc/islandoraNewspaperImportPage.php');
-require_once('lib/smarty/distribution/libs/Smarty.class.php');
+require_once 'inc/islandoraNewspaperImport.php';
+require_once 'inc/islandoraNewspaperImportIssue.php';
+require_once 'inc/islandoraNewspaperImportPage.php';
+require_once 'inc/islandoraNewspaperImportQueue.php';
+require_once 'lib/smarty/distribution/libs/Smarty.class.php';
 
 function bootstrapDrupal() {
 	$drupal_core_path = DRUSH_DRUPAL_CORE;
