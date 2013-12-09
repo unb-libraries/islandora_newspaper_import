@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @file
+ * Drush commands to manage islandora_solution_pack newspaper issues into Fedora.
+ */
+
 require_once 'inc/islandoraNewspaperImport.php';
 require_once 'inc/islandoraNewspaperImportIssue.php';
 require_once 'inc/islandoraNewspaperImportPage.php';
