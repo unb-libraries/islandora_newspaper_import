@@ -183,7 +183,8 @@ and \$object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>
 minus (\$object <fedora-view:disseminates> \$ds1 in <#ri>
 and \$ds1 <fedora-view:disseminationType> <info:fedora/*/$cur_datastream_label> in <#ri>)
 EOT;
-    // TODO : Printing here is weak, but allows us to pipe input into another tool. Something else instead
+    // TODO : Printing here is weak, but allows us to pipe input into another
+    // tool. Should we do something else instead?
     foreach( $repo_query->query($find_missing_ds_itql, 'itql') as $cur_result) {
       print "{$cur_result['object']['value']},$cur_datastream_label\n";
     }
@@ -234,7 +235,6 @@ EOT;
     }
   }
 
-  // We have PIDs, now start purging
   foreach($pids_to_purge as $cur_purge_pid) {
     foreach (explode(',', $datastream_labels) as $cur_datastream_label) {
       $api_connection->m->purgeDatastream($cur_purge_pid, $cur_datastream_label);
