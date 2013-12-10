@@ -5,10 +5,10 @@
  * Drush commands : manage islandora_solution_pack newspapers in Fedora.
  */
 
-require_once 'inc/islandoraNewspaperImport.php';
-require_once 'inc/islandoraNewspaperImportIssue.php';
-require_once 'inc/islandoraNewspaperImportPage.php';
-require_once 'inc/islandoraNewspaperImportQueue.php';
+require_once 'inc/IslandoraNewspaperImport.php';
+require_once 'inc/IslandoraNewspaperImportIssue.php';
+require_once 'inc/IslandoraNewspaperImportPage.php';
+require_once 'inc/IslandoraNewspaperImportQueue.php';
 require_once 'lib/smarty/distribution/libs/Smarty.class.php';
 
 /**
@@ -116,7 +116,7 @@ function islandora_newspaper_ingest_drush_command() {
  */
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($import_path, $parent_pid, $base_namespace, $title_string, $fedora_url, $fedora_user, $fedora_password) {
   _islandora_newspaper_ingest_bootstrap_drupal();
-  $import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
+  $import = new IslandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
   $import->buildTitle($title_string, $parent_pid, $base_namespace);
   $import->ingestTitle();
 }
@@ -147,7 +147,7 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($impo
  */
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
   _islandora_newspaper_ingest_bootstrap_drupal();
-  $import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
+  $import = new IslandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
   $import->buildIssue($marcorg_id, $parent_pid, $base_namespace, $special_identifier);
   $import->ingestIssue();
 }

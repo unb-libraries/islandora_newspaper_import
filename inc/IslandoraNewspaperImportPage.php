@@ -1,6 +1,6 @@
 <?php
 
-class islandoraNewspaperImportPage {
+class IslandoraNewspaperImportPage {
 
 	function __construct($parentPID, $pageContentModelString, $sourceMedia, $pageNumber, $imageFilePath, $marcOrgID, $pageLanguage) {
 		$this->pageNumber=$pageNumber;

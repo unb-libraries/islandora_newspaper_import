@@ -1,6 +1,6 @@
 <?php
 
-class islandoraNewspaperImport {
+class IslandoraNewspaperImport {
 
   function __construct($repoURL,$repoUser,$repoPass,$importPath) {
     $this->fedoraInit($repoURL,$repoUser,$repoPass);
