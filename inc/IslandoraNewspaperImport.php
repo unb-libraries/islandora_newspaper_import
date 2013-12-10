@@ -36,9 +36,9 @@ class IslandoraNewspaperImport {
    */
   public function assignTemplatePath() {
     $reflector = new ReflectionClass(get_class($this));
-    $fn = $reflector->getFileName();
-    $this->templatepath=dirname($fn). '/../templates';
-    $this->XSLpath=dirname($fn). '/../xsl';
+    $file_name = $reflector->getFileName();
+    $this->templatepath=dirname($file_name) . '/../templates';
+    $this->XSLpath=dirname($file_name) . '/../xsl';
   }
 
   function fedoraInit($repoURL,$repoUser,$repoPass) {
