@@ -29,7 +29,7 @@ class IslandoraNewspaperImport {
     $this->importPath = $import_path;
   }
   /**
-   * Assigns the absolute template path.
+   * Assigns the absolute template and XSL path.
    *
    * Without ReflectionClass it seems unlikely we can obtain the full, absolute
    * path to the drush command source tree.
@@ -38,11 +38,6 @@ class IslandoraNewspaperImport {
     $reflector = new ReflectionClass(get_class($this));
     $fn = $reflector->getFileName();
     $this->templatepath=dirname($fn). '/../templates';
-  }
-
-  function assignXSLPath() {
-    $reflector = new ReflectionClass(get_class($this));
-    $fn = $reflector->getFileName();
     $this->XSLpath=dirname($fn). '/../xsl';
   }
 
