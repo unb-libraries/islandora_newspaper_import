@@ -27,7 +27,7 @@ function _islandora_newspaper_ingest_bootstrap_drupal() {
   include_once $drupal_core_path . '/includes/module.inc';
   drupal_load('module', 'islandora');
   drupal_load('module', 'islandora_newspaper');
-  include_once('/srv/www/VRE7/sites/newspapers.lib.unb.ca/modules/islandora/includes/tuque.inc');
+  include_once '/srv/www/VRE7/sites/newspapers.lib.unb.ca/modules/islandora/includes/tuque.inc';
 }
 
 /**
