@@ -174,7 +174,7 @@ function drush_islandora_newspaper_ingest_islandora_audit_newspaper_pages($datas
   $repo_query = new RepositoryQuery($repo_connection);
 
   foreach (explode(',', $datastream_labels) as $cur_datastream_label) {
-    $find_missing_ds_itql=<<<EOT
+    $find_missing_ds_itql = <<<EOT
 select \$object from <#ri>
 where
 (\$object <fedora-model:hasModel> <info:fedora/islandora:newspaperPageCModel>
@@ -214,11 +214,11 @@ function drush_islandora_newspaper_ingest_islandora_purge_newspaper_page_datastr
   _islandora_newspaper_ingest_bootstrap_drupal();
   $repo_connection = new RepositoryConnection($fedora_url, $fedora_user, $fedora_password);
   $api_connection = new FedoraApi($repo_connection);
-  $pids_to_purge=array();
+  $pids_to_purge = array();
 
   if ($pid_values == 'ALL') {
     $repo_query = new RepositoryQuery($repo_connection);
-    $find_missing_ds_itql=<<<EOT
+    $find_missing_ds_itql = <<<EOT
 select \$object from <#ri>
 where
 (\$object <fedora-model:hasModel> <info:fedora/islandora:newspaperPageCModel>
