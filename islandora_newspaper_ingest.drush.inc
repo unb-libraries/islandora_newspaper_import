@@ -170,10 +170,10 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($impo
  */
 function drush_islandora_newspaper_ingest_islandora_audit_newspaper_pages($datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
   _islandora_newspaper_ingest_bootstrap_drupal();
-  $repo_connection = new RepositoryConnection($fedora_url,$fedora_user,$fedora_password);
+  $repo_connection = new RepositoryConnection($fedora_url, $fedora_user, $fedora_password);
   $repo_query = new RepositoryQuery($repo_connection);
 
-  foreach (explode(',',$datastream_labels) as $cur_datastream_label) {
+  foreach (explode(',', $datastream_labels) as $cur_datastream_label) {
     $find_missing_ds_itql=<<<EOT
 select \$object from <#ri>
 where
@@ -212,7 +212,7 @@ EOT;
  */
 function drush_islandora_newspaper_ingest_islandora_purge_newspaper_page_datastreams($pid_values, $datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
   _islandora_newspaper_ingest_bootstrap_drupal();
-  $repo_connection = new RepositoryConnection($fedora_url,$fedora_user,$fedora_password);
+  $repo_connection = new RepositoryConnection($fedora_url, $fedora_user, $fedora_password);
   $api_connection = new FedoraApi($repo_connection);
   $pids_to_purge=array();
 
@@ -229,14 +229,14 @@ EOT;
       $pids_to_purge[] = $cur_result['object']['value'];
     }
   } else {
-    foreach (explode(',',$pid_values) as $cur_pid) {
+    foreach (explode(',', $pid_values) as $cur_pid) {
       $pids_to_purge[] = $cur_pid;
     }
   }
 
   // We have PIDs, now start purging
   foreach($pids_to_purge as $cur_purge_pid) {
-    foreach (explode(',',$datastream_labels) as $cur_datastream_label) {
+    foreach (explode(',', $datastream_labels) as $cur_datastream_label) {
       $api_connection->m->purgeDatastream($cur_purge_pid, $cur_datastream_label);
     }
   }
