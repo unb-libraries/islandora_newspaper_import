@@ -11,6 +11,9 @@ require_once 'inc/islandoraNewspaperImportPage.php';
 require_once 'inc/islandoraNewspaperImportQueue.php';
 require_once 'lib/smarty/distribution/libs/Smarty.class.php';
 
+/**
+ * Boostrap Drupal and islandora.
+ */
 function _islandora_newspaper_ingest_bootstrap_drupal() {
 	$drupal_core_path = DRUSH_DRUPAL_CORE;
 	require_once $drupal_core_path . '/includes/bootstrap.inc';
@@ -27,6 +30,9 @@ function _islandora_newspaper_ingest_bootstrap_drupal() {
 	include_once('/srv/www/VRE7/sites/newspapers.lib.unb.ca/modules/islandora/includes/tuque.inc');
 }
 
+/**
+ * Implements hook_drush_command().
+ */
 function islandora_newspaper_ingest_drush_command() {
 	$items = array();
 	$items['islandora_ingest_newspaper_issue'] = array(
@@ -86,6 +92,28 @@ function islandora_newspaper_ingest_drush_command() {
 	return $items;
 }
 
+/*
+ * Ingest a newspaper title into Fedora
+ *
+ * Typically used to ingest the title newsobject for an upcoming issue ingest.
+ *
+ * Callback for islandora_newspaper_ingest_drush_command()
+ *
+ * @param string $import_path
+ *  The path that contains the newspaper metadata file named MODS.xml
+ * @param string $parent_pid
+ *  The PID of the collection that will contain the title
+ * @param string $base_namespace
+ *  The PID to use for the title
+ * @param string $fedora_url
+ *  The full URI (including port number) for the Fedora repository
+ * @param string $fedora_user
+ *  Username for authentication to the Fedora repository
+ * @param string $fedora_password
+ *  Password for authentication to the Fedora repository
+ *
+ * @ingroup callbacks
+ */
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($import_path, $parent_pid, $base_namespace, $title_string, $fedora_url, $fedora_user, $fedora_password) {
 	_islandora_newspaper_ingest_bootstrap_drupal();
 	$import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
@@ -93,6 +121,30 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($impo
 	$import->ingestTitle();
 }
 
+/*
+ * Ingest a newspaper issue into Fedora
+ *
+ * Callback for islandora_newspaper_ingest_drush_command()
+ *
+ * @param string $import_path
+ *  The path that contains the newspaper metadata file named MODS.xml
+ * @param string $parent_pid
+ *  The parent PID of the collection that will contain the title
+ * @param string $base_namespace
+ *  The base string to use in the namespace for the title
+ * @param string $fedora_url
+ *  The full URI (including port number) for the Fedora repository
+ * @param string $fedora_user
+ *  Username for authentication to the Fedora repository
+ * @param string $fedora_password
+ *  Password for authentication to the Fedora repository
+ * @param string $marcorg_id
+ *  The content creator marcorg ID code to use in issue MODS
+ * @param string $special_identifier
+ *  A string used to construct unique PIDs for supplements
+ *
+ * @ingroup callbacks
+ */
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
 	_islandora_newspaper_ingest_bootstrap_drupal();
 	$import = new islandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
@@ -100,6 +152,22 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($impo
 	$import->ingestIssue();
 }
 
+/*
+ * Audit the existence of Fedora object datastreams
+ *
+ * Callback for islandora_newspaper_ingest_drush_command()
+ *
+ * @param string $datastream_labels
+ *  Comma separted list of datastream label(s) to audit
+ * @param string $fedora_url
+ *  The full URI (including port number) for the Fedora repository
+ * @param string $fedora_user
+ *  Username for authentication to the Fedora repository
+ * @param string $fedora_password
+ *  Password for authentication to the Fedora repository
+ *
+ * @ingroup callbacks
+ */
 function drush_islandora_newspaper_ingest_islandora_audit_newspaper_pages($datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
 	_islandora_newspaper_ingest_bootstrap_drupal();
 	$repo_connection = new RepositoryConnection($fedora_url,$fedora_user,$fedora_password);
@@ -122,6 +190,26 @@ EOT;
 	}
 }
 
+/*
+ * Purge datastreams from Fedora objects.
+ *
+ * Callback for islandora_newspaper_ingest_drush_command()
+ *
+ * @param string $pid_values
+ *  Comma separted list of PIDs from which to purge datastreams. If 'ALL' is
+ *  specified, then all objects in the repository will be purged of datastreams
+ *  with labels matching those specified in $datastream_labels
+ * @param string $datastream_labels
+ *  Comma separted list of datastream label(s) to purge
+ * @param string $fedora_url
+ *  The full URI (including port number) for the Fedora repository
+ * @param string $fedora_user
+ *  Username for authentication to the Fedora repository
+ * @param string $fedora_password
+ *  Password for authentication to the Fedora repository
+ *
+ * @ingroup callbacks
+ */
 function drush_islandora_newspaper_ingest_islandora_purge_newspaper_page_datastreams($pid_values, $datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
 	_islandora_newspaper_ingest_bootstrap_drupal();
 	$repo_connection = new RepositoryConnection($fedora_url,$fedora_user,$fedora_password);
