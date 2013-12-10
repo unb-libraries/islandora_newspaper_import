@@ -37,22 +37,24 @@ class IslandoraNewspaperImport {
   public function assignTemplatePath() {
     $reflector = new ReflectionClass(get_class($this));
     $file_name = $reflector->getFileName();
-    $this->templatepath=dirname($file_name) . '/../templates';
-    $this->XSLpath=dirname($file_name) . '/../xsl';
+    $this->templatePath = dirname($file_name) . '/../templates';
+    $this->xslPath = dirname($file_name) . '/../xsl';
   }
-
-  function fedoraInit($repoURL,$repoUser,$repoPass) {
-    print "$repoURL,$repoUser,$repoPass";
-    $this->connection = new RepositoryConnection($repoURL,$repoUser,$repoPass);
+  /**
+   * Initialize and assign the Fedora repository object property and API.
+   */
+  public function fedoraInit($fedora_url, $fedora_user, $fedora_password) {
+    $this->connection = new RepositoryConnection($fedora_url, $fedora_user, $fedora_password);
     $this->api = new FedoraApi($this->connection);
     $cache = new SimpleCache();
     $this->repository = new FedoraRepository($this->api, $cache);
     try {
-      $randPID=uniqid().':'.uniqid();
-      $this->api->m->ingest(array('pid' => $randPID));
-      $this->api->m->purgeObject($randPID);
-    } catch (Exception $e) {
-      die("Cannot ingest or purge items from random pid $randPID (Check URL/credentials)\n");
+      $random_pid = uniqid() . ':' . uniqid();
+      $this->api->m->ingest(array('pid' => $random_pid));
+      $this->api->m->purgeObject($random_pid);
+    }
+    catch (Exception $feodra_exception) {
+      die("Cannot ingest or purge items from random pid $random_pid (Check URL/credentials)\n");
     }
   }
 
@@ -79,7 +81,7 @@ class IslandoraNewspaperImport {
     $titleRDF->assign('title_pid', $this->titlePID);
     $titleRDF->assign('collection_pid', $this->collectionPID);
     $this->xml['RDF'] = new DOMDocument();
-    $this->xml['RDF']->loadXML($titleRDF->fetch(join('/', array($this->templatepath, 'title_rdf.tpl.php'))));
+    $this->xml['RDF']->loadXML($titleRDF->fetch(join('/', array($this->templatePath, 'title_rdf.tpl.php'))));
 
     // Generate MODS
     $this->xml['MODS'] = new DOMDocument();
@@ -87,7 +89,7 @@ class IslandoraNewspaperImport {
 
     // Generate DC
     $transformXSL = new DOMDocument();
-    $transformXSL->load(join('/', array($this->XSLpath, 'mods_to_dc.xsl')));
+    $transformXSL->load(join('/', array($this->xslPath, 'mods_to_dc.xsl')));
     $processor = new XSLTProcessor();
     $processor->importStylesheet($transformXSL);
     $this->xml['DC'] = new DOMDocument();
