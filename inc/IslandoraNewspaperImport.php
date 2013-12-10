@@ -1,13 +1,40 @@
 <?php
 
+/**
+ * @file
+ * Contains IslandoraNewspaperImport.
+ */
+
+/**
+ * Represents a newspaper import session.
+ *
+ * The IslandoraNewspaperImport class provides an import method for either
+ * issues or Titles into Fedora/Islandora.
+ */
 class IslandoraNewspaperImport {
-
-  function __construct($repoURL,$repoUser,$repoPass,$importPath) {
-    $this->fedoraInit($repoURL,$repoUser,$repoPass);
-    $this->importPath=$importPath;
+  /**
+   * Constructs an IslandoraNewspaperImport object.
+   *
+   * @param string $fedora_url
+   *   The full URI (including port number) for the Fedora repository
+   * @param string $fedora_user
+   *   Username for authentication to the Fedora repository
+   * @param string $fedora_password
+   *   Password for authentication to the Fedora repository
+   * @param string $import_path
+   *   The path that contains the import data
+   */
+  protected function __construct($fedora_url, $fedora_user, $fedora_password, $import_path) {
+    $this->fedoraInit($fedora_url, $fedora_user, $fedora_password);
+    $this->importPath = $import_path;
   }
-
-  function assignTemplatePath() {
+  /**
+   * Assigns the absolute template path.
+   *
+   * Without ReflectionClass it seems unlikely we can obtain the full, absolute
+   * path to the drush command source tree.
+   */
+  public function assignTemplatePath() {
     $reflector = new ReflectionClass(get_class($this));
     $fn = $reflector->getFileName();
     $this->templatepath=dirname($fn). '/../templates';
