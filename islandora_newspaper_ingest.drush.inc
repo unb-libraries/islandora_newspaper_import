@@ -92,25 +92,25 @@ function islandora_newspaper_ingest_drush_command() {
   return $items;
 }
 
-/*
- * Ingest a newspaper title into Fedora
+/**
+ * Ingest a newspaper title into Fedora.
  *
  * Typically used to ingest the title newsobject for an upcoming issue ingest.
  *
  * Callback for islandora_newspaper_ingest_drush_command()
  *
  * @param string $import_path
- *  The path that contains the newspaper metadata file named MODS.xml
+ *   The path that contains the newspaper metadata file named MODS.xml
  * @param string $parent_pid
- *  The PID of the collection that will contain the title
+ *   The PID of the collection that will contain the title
  * @param string $base_namespace
- *  The PID to use for the title
+ *   The PID to use for the title
  * @param string $fedora_url
- *  The full URI (including port number) for the Fedora repository
+ *   The full URI (including port number) for the Fedora repository
  * @param string $fedora_user
- *  Username for authentication to the Fedora repository
+ *   Username for authentication to the Fedora repository
  * @param string $fedora_password
- *  Password for authentication to the Fedora repository
+ *   Password for authentication to the Fedora repository
  *
  * @ingroup callbacks
  */
@@ -121,27 +121,27 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($impo
   $import->ingestTitle();
 }
 
-/*
- * Ingest a newspaper issue into Fedora
+/**
+ * Ingest a newspaper issue into Fedora.
  *
  * Callback for islandora_newspaper_ingest_drush_command()
  *
  * @param string $import_path
- *  The path that contains the newspaper metadata file named MODS.xml
+ *   The path that contains the newspaper metadata file named MODS.xml
  * @param string $parent_pid
- *  The parent PID of the collection that will contain the title
+ *   The parent PID of the collection that will contain the title
  * @param string $base_namespace
- *  The base string to use in the namespace for the title
+ *   The base string to use in the namespace for the title
  * @param string $fedora_url
- *  The full URI (including port number) for the Fedora repository
+ *   The full URI (including port number) for the Fedora repository
  * @param string $fedora_user
- *  Username for authentication to the Fedora repository
+ *   Username for authentication to the Fedora repository
  * @param string $fedora_password
- *  Password for authentication to the Fedora repository
+ *   Password for authentication to the Fedora repository
  * @param string $marcorg_id
- *  The content creator marcorg ID code to use in issue MODS
+ *   The content creator marcorg ID code to use in issue MODS
  * @param string $special_identifier
- *  A string used to construct unique PIDs for supplements
+ *   A string used to construct unique PIDs for supplements
  *
  * @ingroup callbacks
  */
@@ -152,19 +152,19 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($impo
   $import->ingestIssue();
 }
 
-/*
- * Audit the existence of Fedora object datastreams
+/**
+ * Audit the existence of Fedora object datastreams.
  *
  * Callback for islandora_newspaper_ingest_drush_command()
  *
  * @param string $datastream_labels
- *  Comma separted list of datastream label(s) to audit
+ *   Comma separted list of datastream label(s) to audit
  * @param string $fedora_url
- *  The full URI (including port number) for the Fedora repository
+ *   The full URI (including port number) for the Fedora repository
  * @param string $fedora_user
- *  Username for authentication to the Fedora repository
+ *   Username for authentication to the Fedora repository
  * @param string $fedora_password
- *  Password for authentication to the Fedora repository
+ *   Password for authentication to the Fedora repository
  *
  * @ingroup callbacks
  */
@@ -190,23 +190,23 @@ EOT;
   }
 }
 
-/*
+/**
  * Purge datastreams from Fedora objects.
  *
  * Callback for islandora_newspaper_ingest_drush_command()
  *
  * @param string $pid_values
- *  Comma separted list of PIDs from which to purge datastreams. If 'ALL' is
- *  specified, then all objects in the repository will be purged of datastreams
- *  with labels matching those specified in $datastream_labels
+ *   Comma separted list of PIDs from which to purge datastreams. If 'ALL' is
+ *   specified, then all objects in the repository will be purged of datastreams
+ *   with labels matching those specified in $datastream_labels
  * @param string $datastream_labels
- *  Comma separted list of datastream label(s) to purge
+ *   Comma separted list of datastream label(s) to purge
  * @param string $fedora_url
- *  The full URI (including port number) for the Fedora repository
+ *   The full URI (including port number) for the Fedora repository
  * @param string $fedora_user
- *  Username for authentication to the Fedora repository
+ *   Username for authentication to the Fedora repository
  * @param string $fedora_password
- *  Password for authentication to the Fedora repository
+ *   Password for authentication to the Fedora repository
  *
  * @ingroup callbacks
  */
