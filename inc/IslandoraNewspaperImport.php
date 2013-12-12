@@ -42,6 +42,13 @@ class IslandoraNewspaperImport {
   }
   /**
    * Initialize and assign the Fedora repository object property and API.
+   * 
+   * @param string $fedora_url
+   *   The full URI (including port number) for the Fedora repository
+   * @param string $fedora_user
+   *   Username for authentication to the Fedora repository
+   * @param string $fedora_password
+   *   Password for authentication to the Fedora repository
    */
   private function fedoraInit($fedora_url, $fedora_user, $fedora_password) {
     $this->connection = new RepositoryConnection($fedora_url, $fedora_user, $fedora_password);
@@ -59,8 +66,17 @@ class IslandoraNewspaperImport {
   }
   /**
    * Constructs the IslandoraNewspaperIssue object and datastreams.
+   * 
+   * @param string $marcorg_id
+   *   The MARC organization code of the ingesting institution
+   * @param string $parent_pid
+   *   The persistent identifier of the the parent object
+   * @param string $issue_namespace
+   *   The base namespace to use in constructing persistent identifiers
+   * @param string $issue_special_identifier
+   *   A special identification string appended to the persistent identifier
    */
-  protected function buildIssue($marcorg_id, $parent_pid, $issue_namespace, $special_identifier) {
+  protected function buildIssue($marcorg_id, $parent_pid, $issue_namespace, $issue_special_identifier) {
     $this->setupIssueSourceData();
     $this->validateIssueConfigData();
     $this->issue = new IslandoraNewspaperImportIssue(
@@ -78,7 +94,7 @@ class IslandoraNewspaperImport {
             ISSUE_EDITION,
             MISSING_PAGES,
             ISSUE_LANGUAGE,
-            $special_identifier,
+            $issue_special_identifier,
             ISSUE_SUPPLEMENT_TITLE,
             ISSUE_ERRATA
             );
@@ -97,9 +113,16 @@ class IslandoraNewspaperImport {
   }
   /**
    * Builds the newspaper title Fedora object and datastreams.
+   * 
+   * @param string $title_string
+   *   The string to use as the title's title.
+   * @param string $parent_pid
+   *   The persistent identifier of the parent object
+   * @param string $title_pid
+   *   The persistent identifier to assign to this title
    */
-  protected function buildTitle($title_string, $collection_pid, $title_pid) {
-    $this->collectionPID = $collection_pid;
+  protected function buildTitle($title_string, $parent_pid, $title_pid) {
+    $this->collectionPID = $parent_pid;
     $this->titlePID = $title_pid;
     $this->titleTitle = $title_string;
     $this->assignTemplatePath();
