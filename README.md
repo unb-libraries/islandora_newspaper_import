@@ -26,5 +26,5 @@ The required arguments, in order, are:
 +   marcorg_id : The content creator marcorg ID code
 
 ```bash
-drush -u 1 --root=/srv/www --uri=http://localhost islandora_newspaper_ingest http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph NBFU
+drush -u 1 --root=/srv/www --uri=http://localhost islandora_ingest_newspaper_issue http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph NBFU
 ```
