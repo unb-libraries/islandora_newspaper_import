@@ -8,7 +8,7 @@
 require_once 'inc/IslandoraNewspaperImport.php';
 require_once 'inc/IslandoraNewspaperImportIssue.php';
 require_once 'inc/IslandoraNewspaperImportPage.php';
-require_once 'inc/IslandoraNewspaperImportQueue.php';
+# require_once 'inc/IslandoraNewspaperImportQueue.php';
 require_once 'lib/smarty/distribution/libs/Smarty.class.php';
 
 /**
