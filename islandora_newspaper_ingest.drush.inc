@@ -11,29 +11,11 @@ require_once 'inc/IslandoraNewspaperImportPage.php';
 require_once 'vendor/autoload.php';
 
 /**
- * Boostrap Drupal and islandora.
- */
-function _islandora_newspaper_ingest_bootstrap_drupal() {
-  $drupal_core_path = DRUSH_DRUPAL_CORE;
-  require_once $drupal_core_path . '/includes/bootstrap.inc';
-  require_once $drupal_core_path . '/includes/common.inc';
-  include_once $drupal_core_path . '/includes/unicode.inc';
-
-  drupal_bootstrap(DRUPAL_BOOTSTRAP_SESSION);
-  require_once $drupal_core_path . '/includes/install.inc';
-  require_once $drupal_core_path . '/modules/system/system.install';
-
-  include_once $drupal_core_path . '/includes/module.inc';
-  drupal_load('module', 'islandora');
-  drupal_load('module', 'islandora_newspaper');
-  include_once '/srv/www/VRE7/sites/newspapers.lib.unb.ca/modules/islandora/includes/tuque.inc';
-}
-
-/**
  * Implements hook_drush_command().
  */
 function islandora_newspaper_ingest_drush_command() {
   $items = array();
+
   $items['islandora_ingest_newspaper_issue'] = array(
     'description' => "Creates a newspaper issue object and its page children.",
     'arguments' => array(
@@ -50,7 +32,7 @@ function islandora_newspaper_ingest_drush_command() {
       'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_newspaper_ingest /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password UNBFU tv-guide',
     ),
     'aliases' => array('ingestissue'),
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+    'bootstrap' => DRUSH_BOOTSTRAP_MAX,
   );
   $items['islandora_ingest_newspaper_title'] = array(
     'description' => "Creates a newspaper title object.",
@@ -67,7 +49,7 @@ function islandora_newspaper_ingest_drush_command() {
       'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_ingest_newspaper_title /mnt/images/TJ/ islandora:newspapers newspapers:telegraphjournal http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password',
     ),
     'aliases' => array('ingesttitle'),
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+    'bootstrap' => DRUSH_BOOTSTRAP_MAX,
   );
   $items['islandora_audit_newspaper_pages'] = array(
     'description' => "Audit newspaper page objects for a specified datastream. Returns a list of failed PIDs.",
@@ -77,6 +59,7 @@ function islandora_newspaper_ingest_drush_command() {
       'fedora_user' => 'A user with full write access to the fedora repository',
       'fedora_password' => 'Password for the fedora user',
     ),
+    'bootstrap' => DRUSH_BOOTSTRAP_MAX,
   );
   $items['islandora_purge_newspaper_page_datastreams'] = array(
     'description' => "Purge defined datastreams from a list or ALL newspaper page objects.",
@@ -87,6 +70,7 @@ function islandora_newspaper_ingest_drush_command() {
       'fedora_user' => 'A user with full write access to the fedora repository',
       'fedora_password' => 'Password for the fedora user',
     ),
+    'bootstrap' => DRUSH_BOOTSTRAP_MAX,
   );
   return $items;
 }
@@ -114,7 +98,6 @@ function islandora_newspaper_ingest_drush_command() {
  * @ingroup callbacks
  */
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($import_path, $parent_pid, $base_namespace, $title_string, $fedora_url, $fedora_user, $fedora_password) {
-  _islandora_newspaper_ingest_bootstrap_drupal();
   $import = new IslandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
   $import->buildTitle($title_string, $parent_pid, $base_namespace);
   $import->ingestTitle();
@@ -145,7 +128,6 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($impo
  * @ingroup callbacks
  */
 function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($import_path, $parent_pid, $base_namespace, $fedora_url, $fedora_user, $fedora_password, $marcorg_id, $special_identifier) {
-  _islandora_newspaper_ingest_bootstrap_drupal();
   $import = new IslandoraNewspaperImport($fedora_url, $fedora_user, $fedora_password, $import_path);
   $import->buildIssue($marcorg_id, $parent_pid, $base_namespace, $special_identifier);
   $import->ingestIssue();
@@ -168,7 +150,6 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($impo
  * @ingroup callbacks
  */
 function drush_islandora_newspaper_ingest_islandora_audit_newspaper_pages($datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
-  _islandora_newspaper_ingest_bootstrap_drupal();
   $repo_connection = new RepositoryConnection($fedora_url, $fedora_user, $fedora_password);
   $repo_query = new RepositoryQuery($repo_connection);
 
@@ -211,7 +192,6 @@ EOT;
  * @ingroup callbacks
  */
 function drush_islandora_newspaper_ingest_islandora_purge_newspaper_page_datastreams($pid_values, $datastream_labels, $fedora_url, $fedora_user, $fedora_password) {
-  _islandora_newspaper_ingest_bootstrap_drupal();
   $repo_connection = new RepositoryConnection($fedora_url, $fedora_user, $fedora_password);
   $api_connection = new FedoraApi($repo_connection);
   $pids_to_purge = array();
