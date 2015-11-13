@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Drush commands : manage islandora_solution_pack newspapers in Fedora.
+ * Drush commands : Manage islandora_solution_pack newspapers in Fedora.
  */
 
 require_once 'inc/IslandoraNewspaperImport.php';
@@ -29,7 +29,7 @@ function islandora_newspaper_ingest_drush_command() {
       'special_identifier' => 'A special identifier used for identifying supplements, etc.',
     ),
     'examples' => array(
-      'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_newspaper_ingest /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password UNBFU tv-guide',
+      'drush -u 1 --root=/srv/www/htdocs --uri=http://localhost islandora_newspaper_ingest /mnt/images/TJ/1974/01/01 newspapers:telegraph telegraph http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password UNBFU tv-guide',
     ),
     'aliases' => array('ingestissue'),
     'bootstrap' => DRUSH_BOOTSTRAP_MAX,
@@ -46,7 +46,7 @@ function islandora_newspaper_ingest_drush_command() {
       'fedora_password' => 'Password for the fedora user',
     ),
     'examples' => array(
-      'drush -u 1 --root=/srv/www/VRE7 --uri=http://localhost islandora_ingest_newspaper_title /mnt/images/TJ/ islandora:newspapers newspapers:telegraphjournal http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password',
+      'drush -u 1 --root=/srv/www/htdocs --uri=http://localhost islandora_ingest_newspaper_title /mnt/images/TJ/ islandora:newspapers newspapers:telegraphjournal http://fedora.lib.unb.ca:8080/fedora fedoraAdmin password',
     ),
     'aliases' => array('ingesttitle'),
     'bootstrap' => DRUSH_BOOTSTRAP_MAX,
@@ -83,17 +83,17 @@ function islandora_newspaper_ingest_drush_command() {
  * Callback for islandora_newspaper_ingest_drush_command()
  *
  * @param string $import_path
- *   The path that contains the newspaper metadata file named MODS.xml
+ *   The path that contains the newspaper metadata file named MODS.xml.
  * @param string $parent_pid
- *   The PID of the collection that will contain the title
+ *   The PID of the collection that will contain the title.
  * @param string $base_namespace
- *   The PID to use for the title
+ *   The PID to use for the title.
  * @param string $fedora_url
- *   The full URI (including port number) for the Fedora repository
+ *   The full URI (including port number) for the Fedora repository.
  * @param string $fedora_user
- *   Username for authentication to the Fedora repository
+ *   Username for authentication to the Fedora repository.
  * @param string $fedora_password
- *   Password for authentication to the Fedora repository
+ *   Password for authentication to the Fedora repository.
  *
  * @ingroup callbacks
  */
@@ -109,21 +109,21 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_title($impo
  * Callback for islandora_newspaper_ingest_drush_command()
  *
  * @param string $import_path
- *   The path that contains the newspaper metadata file named MODS.xml
+ *   The path that contains the newspaper metadata file named MODS.xml.
  * @param string $parent_pid
- *   The parent PID of the collection that will contain the title
+ *   The parent PID of the collection that will contain the title.
  * @param string $base_namespace
- *   The base string to use in the namespace for the title
+ *   The base string to use in the namespace for the title.
  * @param string $fedora_url
- *   The full URI (including port number) for the Fedora repository
+ *   The full URI (including port number) for the Fedora repository.
  * @param string $fedora_user
- *   Username for authentication to the Fedora repository
+ *   Username for authentication to the Fedora repository.
  * @param string $fedora_password
- *   Password for authentication to the Fedora repository
+ *   Password for authentication to the Fedora repository.
  * @param string $marcorg_id
- *   The content creator marcorg ID code to use in issue MODS
+ *   The content creator marcorg ID code to use in issue MODS.
  * @param string $special_identifier
- *   A string used to construct unique PIDs for supplements
+ *   A string used to construct unique PIDs for supplements.
  *
  * @ingroup callbacks
  */
@@ -139,13 +139,13 @@ function drush_islandora_newspaper_ingest_islandora_ingest_newspaper_issue($impo
  * Callback for islandora_newspaper_ingest_drush_command()
  *
  * @param string $datastream_labels
- *   Comma separted list of datastream label(s) to audit
+ *   Comma separted list of datastream label(s) to audit.
  * @param string $fedora_url
- *   The full URI (including port number) for the Fedora repository
+ *   The full URI (including port number) for the Fedora repository.
  * @param string $fedora_user
- *   Username for authentication to the Fedora repository
+ *   Username for authentication to the Fedora repository.
  * @param string $fedora_password
- *   Password for authentication to the Fedora repository
+ *   Password for authentication to the Fedora repository.
  *
  * @ingroup callbacks
  */
@@ -179,15 +179,15 @@ EOT;
  * @param string $pid_values
  *   Comma separted list of PIDs from which to purge datastreams. If 'ALL' is
  *   specified, then all objects in the repository will be purged of datastreams
- *   with labels matching those specified in $datastream_labels
+ *   with labels matching those specified in $datastream_labels.
  * @param string $datastream_labels
- *   Comma separted list of datastream label(s) to purge
+ *   Comma separted list of datastream label(s) to purge.
  * @param string $fedora_url
- *   The full URI (including port number) for the Fedora repository
+ *   The full URI (including port number) for the Fedora repository.
  * @param string $fedora_user
- *   Username for authentication to the Fedora repository
+ *   Username for authentication to the Fedora repository.
  * @param string $fedora_password
- *   Password for authentication to the Fedora repository
+ *   Password for authentication to the Fedora repository.
  *
  * @ingroup callbacks
  */

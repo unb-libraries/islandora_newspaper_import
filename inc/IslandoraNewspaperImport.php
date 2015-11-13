@@ -16,18 +16,19 @@ class IslandoraNewspaperImport {
    * Constructs an IslandoraNewspaperImport object.
    *
    * @param string $fedora_url
-   *   The full URI (including port number) for the Fedora repository
+   *   The full URI (including port number) for the Fedora repository.
    * @param string $fedora_user
-   *   Username for authentication to the Fedora repository
+   *   Username for authentication to the Fedora repository.
    * @param string $fedora_password
-   *   Password for authentication to the Fedora repository
+   *   Password for authentication to the Fedora repository.
    * @param string $import_path
-   *   The path that contains the import data
+   *   The path that contains the import data.
    */
-  protected function __construct($fedora_url, $fedora_user, $fedora_password, $import_path) {
+  public function __construct($fedora_url, $fedora_user, $fedora_password, $import_path) {
     $this->fedoraInit($fedora_url, $fedora_user, $fedora_password);
     $this->importPath = $import_path;
   }
+
   /**
    * Assigns the absolute template and XSL path.
    *
@@ -40,15 +41,16 @@ class IslandoraNewspaperImport {
     $this->templatePath = dirname($file_name) . '/../templates';
     $this->xslPath = dirname($file_name) . '/../xsl';
   }
+
   /**
    * Initialize and assign the Fedora repository object property and API.
-   * 
+   *
    * @param string $fedora_url
-   *   The full URI (including port number) for the Fedora repository
+   *   The full URI (including port number) for the Fedora repository.
    * @param string $fedora_user
-   *   Username for authentication to the Fedora repository
+   *   Username for authentication to the Fedora repository.
    * @param string $fedora_password
-   *   Password for authentication to the Fedora repository
+   *   Password for authentication to the Fedora repository.
    */
   private function fedoraInit($fedora_url, $fedora_user, $fedora_password) {
     $this->connection = new RepositoryConnection($fedora_url, $fedora_user, $fedora_password);
@@ -64,19 +66,20 @@ class IslandoraNewspaperImport {
       die("Cannot ingest or purge items from random pid $random_pid (Check URL/credentials)\n");
     }
   }
+
   /**
    * Constructs the IslandoraNewspaperIssue object and datastreams.
-   * 
+   *
    * @param string $marcorg_id
-   *   The MARC organization code of the ingesting institution
+   *   The MARC organization code of the ingesting institution.
    * @param string $parent_pid
-   *   The persistent identifier of the the parent object
+   *   The persistent identifier of the the parent object.
    * @param string $issue_namespace
-   *   The base namespace to use in constructing persistent identifiers
+   *   The base namespace to use in constructing persistent identifiers.
    * @param string $issue_special_identifier
-   *   A special identification string appended to the persistent identifier
+   *   A special identification string appended to the persistent identifier.
    */
-  protected function buildIssue($marcorg_id, $parent_pid, $issue_namespace, $issue_special_identifier) {
+  public function buildIssue($marcorg_id, $parent_pid, $issue_namespace, $issue_special_identifier) {
     $this->setupIssueSourceData();
     $this->validateIssueConfigData();
     $this->issue = new IslandoraNewspaperImportIssue(
@@ -105,23 +108,25 @@ class IslandoraNewspaperImport {
             $this->xslPath
             );
   }
+
   /**
    * Ingests the newspaper issue object into the Fedora repository.
    */
-  protected function ingestIssue() {
+  public function ingestIssue() {
     $this->issue->ingest($this->repository);
   }
+
   /**
    * Builds the newspaper title Fedora object and datastreams.
-   * 
+   *
    * @param string $title_string
    *   The string to use as the title's title.
    * @param string $parent_pid
-   *   The persistent identifier of the parent object
+   *   The persistent identifier of the parent object.
    * @param string $title_pid
-   *   The persistent identifier to assign to this title
+   *   The persistent identifier to assign to this title.
    */
-  protected function buildTitle($title_string, $parent_pid, $title_pid) {
+  public function buildTitle($title_string, $parent_pid, $title_pid) {
     $this->collectionPID = $parent_pid;
     $this->titlePID = $title_pid;
     $this->titleTitle = $title_string;
@@ -144,10 +149,11 @@ class IslandoraNewspaperImport {
     $this->xml['DC'] = new DOMDocument();
     $this->xml['DC']->loadXML($processor->transformToXML($this->xml['MODS']));
   }
+
   /**
    * Ingests the newspaper title object into the Fedora repository.
    */
-  protected function ingestTitle() {
+  public function ingestTitle() {
     $title_fedora_object = new NewFedoraObject($this->titlePID, $this->repository);
     $title_fedora_object->label = $this->titleTitle;
 
@@ -195,20 +201,21 @@ class IslandoraNewspaperImport {
     foreach ($file_list as $filepath_of_image) {
       $this->imagesToImport[] = array(
         'pageno' => str_replace(
-                '.jpg',
-                '',
-                array_pop(
-                        explode(
-                                '_',
-                                basename($filepath_of_image)
-                                )
-                        )
+          '.jpg',
+          '',
+          array_pop(
+            explode(
+              '_',
+              basename($filepath_of_image)
+            )
+          )
         ),
         'filepath' => $filepath_of_image,
       );
     }
     $this->validateSourcePath();
   }
+
   /**
    * Validates required metadata elements from metadata.php file.
    */
@@ -222,10 +229,11 @@ class IslandoraNewspaperImport {
     );
     foreach ($must_exist_data as $cur_data) {
       if (!constant($cur_data) || constant($cur_data) == '') {
-        die ("$cur_data is not set in metadata.php\n");
+        die("$cur_data is not set in metadata.php\n");
       }
     }
   }
+
   /**
    * Validates const ISSUE_DATE.
    */
@@ -234,6 +242,7 @@ class IslandoraNewspaperImport {
       die("Date from metadata [{ISSUE_DATE}]is invalid\n");
     }
   }
+
   /**
    * Validates $this->import_path to ensure that metadata.php and images exist.
    */
@@ -245,4 +254,5 @@ class IslandoraNewspaperImport {
       die("No *.jpg files exist in import path {$this->import_path}\n");
     }
   }
+
 }
